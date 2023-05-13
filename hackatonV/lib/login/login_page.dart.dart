@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
               height: 320,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/backgroud.png'),
+                  image: AssetImage('assets/backgroud.png'),
                   fit: BoxFit.fill
                   )
               ),
@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
                     child: Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/images/cafe.png')
+                          image: AssetImage('assets/cafe.png')
                         )
                       ),
                     )
