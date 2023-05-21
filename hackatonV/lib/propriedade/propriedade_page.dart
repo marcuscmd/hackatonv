@@ -12,21 +12,21 @@ class PropriedadePage extends StatelessWidget {
       body: Container(
         child: ListView(children: [
           Container(
-            height: 320,
+            height: 250,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/backgroud.png'),
+                    image: AssetImage('assets/backgroud.png'),
                     fit: BoxFit.fill)),
             child: Stack(children: [
               Center(
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 150),
                   width: 210,
-                  height: 210,
+                  height: 30,
                   //left: 75,
                   child: const Icon(
                     Icons.assignment_turned_in_outlined,
-                    size: 115,
+                    size: 100,
                   ),
                 ),
               ),
@@ -39,11 +39,14 @@ class PropriedadePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(top: 0),
+                      padding: const EdgeInsets.only(top: 0, right: 10, bottom: 5),
                       margin: const EdgeInsets.only(top: 0, right: 20),
-                      child: const Icon(
-                        Icons.assignment_turned_in_outlined,
-                        size: 50,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.border_color_outlined,
+                        size: 35,
+                        color: Colors.black,
+                        )
                       ),
                     ),
                   ],
@@ -62,7 +65,7 @@ class PropriedadePage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color.fromARGB(230, 12, 0, 0),
-                        fontSize: 37,
+                        fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -72,10 +75,13 @@ class PropriedadePage extends StatelessWidget {
             ]),
           ),
           Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(25),
             child: Column(
               children: [
-                const SizedBox(height: 15),
+                const Divider(
+                  color: Colors.black,
+                  thickness: 3,
+                ),
                 Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(

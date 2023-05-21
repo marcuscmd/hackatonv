@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../menu/menu_page.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -65,7 +67,8 @@ class LoginPage extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: const BoxDecoration(
-                            border: Border(bottom: BorderSide(color:  Color.fromRGBO(245, 245, 245, 1)))
+                            border: Border(
+                              bottom: BorderSide(color:  Color.fromRGBO(245, 245, 245, 1)))
                           ),
                           child: TextField(
                             decoration: InputDecoration(
@@ -103,12 +106,12 @@ class LoginPage extends StatelessWidget {
                               ]
                             )
                           ),
-                          child: const Center(
-                            child: Text('Acessar',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            )),
+                          child: Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
+                              }, 
+                              child: const Text('Acessar'))
                           ),
                         ),
                         const SizedBox(height: 30),

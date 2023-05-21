@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
+import 'package:hackaton/propriedade/propriedade_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -113,7 +114,6 @@ class _MenuPage extends State<MenuPage> {
 
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
-
         Size size = MediaQuery.of(context).size;
 
 
@@ -121,14 +121,15 @@ class _MenuPage extends State<MenuPage> {
       body: Container(
         width: size.width,
         height: size.height,
-        padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
+        padding: const EdgeInsets.all(0),
         color: const Color.fromRGBO(69, 227, 238, 0.712),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
+              margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              height: size.height * .55,
+              height: size.height * .54,
               decoration: BoxDecoration(
                 gradient: _constants.linearGradientCoffe,
                 boxShadow: [
@@ -145,17 +146,8 @@ class _MenuPage extends State<MenuPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      // dark mode icon
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.nightlight_round,
-                          color: Colors.white,
-                        ),
-                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -250,15 +242,15 @@ class _MenuPage extends State<MenuPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 60,
-                    child: Image.asset("assets/" + weatherIcon),
+                    height: 50,
+                    child: Image.asset("assets/$weatherIcon"),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 3.0),
+                        padding: const EdgeInsets.only(top: 1.0),
                         child: Text(
                           temperature.toString(),
                           style: TextStyle(
@@ -324,8 +316,9 @@ class _MenuPage extends State<MenuPage> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(top: 20),
-              height: size.height * .25,
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(top: 10),
+              height: size.height * .24,
               child: Column(
                 children: [
                   const Row(
@@ -341,10 +334,10 @@ class _MenuPage extends State<MenuPage> {
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 1,
                   ),
                   SizedBox(
-                    height: 105,
+                    height: 100,
                     child: ListView.builder(
                       itemCount: hourlyWeatherForecast.length,
                       scrollDirection: Axis.horizontal,
@@ -438,9 +431,79 @@ class _MenuPage extends State<MenuPage> {
                 ],
               ),
             ),
+            Stack(
+        children: [
+          Positioned(
+            child: Container(
+              width: size.width,
+              height: 80,
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    size: Size(size.width, 55),
+                    painter: BNBCustomePainter(),
+                  ),
+                  Center(
+                    heightFactor: 0.6,
+                    child: FloatingActionButton(
+                      onPressed: (){},
+                      backgroundColor: Colors.orange,
+                      child: Icon(Icons.shopping_basket),
+                      elevation: 0.1,
+                    ),
+                  ),
+                  Container(
+                    width: size.width,
+                    height: 55,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(onPressed: (){}, icon: Icon(Icons.home)),
+                        IconButton(onPressed: (){}, icon: Icon(Icons.restaurant_menu)),
+                        Container(width: size.width*.20,),
+                        IconButton(onPressed: (){}, icon: Icon(Icons.bookmark)),
+                        IconButton(onPressed: (){}, icon: Icon(Icons.notifications)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
           ],
         ),
       ),
     );
+  }
+}
+
+class BNBCustomePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+    Path path = Path()..moveTo(0, 20);
+    path.quadraticBezierTo(size.width * .20, 0, size.width * .35, 0);
+    path.quadraticBezierTo(size.width * .40, 0, size.width * .40, 20);
+    path.arcToPoint(Offset(size.width * .60, 20),
+        radius: const Radius.circular(10.0), clockwise: false);
+
+    path.quadraticBezierTo(size.width * .60, 0, size.width * .65, 0);
+    path.quadraticBezierTo(size.width * .80, 0, size.width , 20);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    canvas.drawShadow(path, Colors.black, 5, true);
+    
+    canvas.drawPath(path, paint);
+  }
+
+    @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }
