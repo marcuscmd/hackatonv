@@ -1,9 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class CadastroPropPage extends StatelessWidget {
+import '../models/appCafe_dao.dart';
+import 'cadastro_prop.dart';
+
+class CadastroPropPage extends StatefulWidget {
   const CadastroPropPage({super.key});
+
+  @override
+  State<CadastroPropPage> createState() => _CadastroPropPage();
+}
+
+class _CadastroPropPage extends State<CadastroPropPage> {
+  List<CadastroPropPage> prop = [];
+
+  TextEditingController nomePropriedade = TextEditingController();
+  TextEditingController tamanhoHectar = TextEditingController();
+  TextEditingController dataPlantio = TextEditingController();
+  double _valorHectar = 0;
+  String dataString = '';
+
+  final AppCafeDao dao = AppCafeDao();
+
+  _CadastroPropPage() {
+    dao.connect().then((value) {
+      load();
+    });
+  }
+
+  load() {
+    dao.list().then((value) {
+      setState(() {
+        prop = value.cast<CadastroPropPage>();
+        nomePropriedade.text = "";
+        tamanhoHectar.text = "";
+        dataPlantio.text = "";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +51,7 @@ class CadastroPropPage extends StatelessWidget {
             height: 320,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/backgroud.png'),
+                    image: AssetImage('assets/backgroud.png'),
                     fit: BoxFit.fill)),
             child: Stack(children: [
               Center(
@@ -65,7 +101,7 @@ class CadastroPropPage extends StatelessWidget {
                             offset: Offset(0, 10))
                       ]),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
                         padding: const EdgeInsets.all(8),
@@ -74,11 +110,18 @@ class CadastroPropPage extends StatelessWidget {
                                 bottom: BorderSide(
                           color: Color.fromRGBO(200, 200, 200, 1),
                         ))),
-                        child: TextField(
+                        child: TextFormField(
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Nome da Propiedade',
                               hintStyle: TextStyle(color: Colors.grey[400])),
+                          controller: nomePropriedade,
+                          validator: (value) {
+                            if (value.toString().isEmpty) {
+                              return 'Insira o nome de uma propriedade';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
@@ -105,11 +148,21 @@ class CadastroPropPage extends StatelessWidget {
                               bottom: BorderSide(
                         color: Color.fromRGBO(200, 200, 200, 1),
                       ))),
-                      child: TextField(
+                      child: TextFormField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Tamanho do Hectar',
                             hintStyle: TextStyle(color: Colors.grey[400])),
+                        controller: tamanhoHectar,
+                        validator: (value) {
+                          if (value.toString().isEmpty) {
+                            return 'Insira o tamanho do hectare';
+                          }
+                          if (double.tryParse(value.toString()) == null) {
+                            return 'Valor inválido. Insira um número válido para o tamanho do hectare';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ]),
@@ -135,19 +188,28 @@ class CadastroPropPage extends StatelessWidget {
                               bottom: BorderSide(
                         color: Color.fromRGBO(200, 200, 200, 1),
                       ))),
-                      child: TextField(
+                      child: TextFormField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(8),
-                          MaskTextInputFormatter(
-                              mask: '##/##/####',
-                              filter: {"#": RegExp(r'[0-9]')})
-                        ],
+                        // inputFormatters: [
+                        //   FilteringTextInputFormatter.digitsOnly,
+                        //   LengthLimitingTextInputFormatter(8),
+                        //   MaskTextInputFormatter(
+                        //     mask: '00/00/0000',
+                        //     filter: {"0": RegExp(r'[0-9]')},
+                        //   ),
+                        // ],
                         decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Data do Plantio',
-                            hintStyle: TextStyle(color: Colors.grey[400])),
+                          border: InputBorder.none,
+                          hintText: 'Data do Plantio',
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                        ),
+                        controller: dataPlantio,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Insira a data de plantio';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ]),
@@ -194,13 +256,33 @@ class CadastroPropPage extends StatelessWidget {
                         Color.fromRGBO(114, 219, 233, 1),
                         Color.fromRGBO(37, 130, 173, 0.945)
                       ])),
-                  child: const Center(
-                    child: Text('Cadastrar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 37,
-                        )),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (nomePropriedade.text.trim() != '') {
+                          //String dataString = dataPlantio.text;
+                          DateTime dataPlantio =
+                              DateFormat('dd/MM/yyyy').parse(PegarData());
+                          int dataTimestamp =
+                              dataPlantio.millisecondsSinceEpoch;
+                          var dep = CadastroProp(
+                            nomePropriedade: nomePropriedade.text,
+                            dataPlantio: dataTimestamp,
+                            tamanhoHectar: _valorHectar =
+                                double.parse(tamanhoHectar.text),
+                          );
+                          dao.insert(dep).then((value) {
+                            load();
+                          });
+                        }
+                      },
+                      child: const Text('Cadastrar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 37,
+                          )),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -210,5 +292,10 @@ class CadastroPropPage extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  String PegarData() {
+    String dataString = dataPlantio.text;
+    return dataString;
   }
 }
