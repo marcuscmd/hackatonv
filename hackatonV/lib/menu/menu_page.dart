@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
+import 'package:hackaton/adubos/adubos_page.dart';
+import 'package:hackaton/plantio/plantio_page.dart';
 import 'package:hackaton/propriedade/propriedade_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -118,7 +120,9 @@ class _MenuPage extends State<MenuPage> {
 
 
     return Scaffold(
-      body: Container(
+      body: Stack(
+        children: [
+        Container(
         width: size.width,
         height: size.height,
         padding: const EdgeInsets.all(0),
@@ -431,38 +435,55 @@ class _MenuPage extends State<MenuPage> {
                 ],
               ),
             ),
-            Stack(
-        children: [
-          Positioned(
-            child: Container(
+          ],
+        ),
+        ),
+        Positioned(
+            bottom: 0,
+            child: SizedBox(
               width: size.width,
               height: 80,
               child: Stack(
                 children: [
                   CustomPaint(
-                    size: Size(size.width, 55),
+                    size: Size(size.width, 80),
                     painter: BNBCustomePainter(),
                   ),
                   Center(
                     heightFactor: 0.6,
                     child: FloatingActionButton(
                       onPressed: (){},
-                      backgroundColor: Colors.orange,
-                      child: Icon(Icons.shopping_basket),
+                      backgroundColor: Colors.white,
+                      child: Icon(Icons.add,
+                      color: Colors.black,
+                      size: 40,
+                      ),
                       elevation: 0.1,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: size.width,
-                    height: 55,
+                    height: 80,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        IconButton(onPressed: (){}, icon: Icon(Icons.home)),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.restaurant_menu)),
+                        IconButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
+                        }, 
+                        icon: const Icon(Icons.home)),
+                        IconButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PropriedadePage()));
+                        }, 
+                        icon: const Icon(Icons.info_outline)),
                         Container(width: size.width*.20,),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.bookmark)),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.notifications)),
+                        IconButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const AduboPage()));
+                        }, 
+                        icon: const Icon(Icons.check_box_outlined)),
+                        IconButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PlantioPage()));
+                        }, 
+                        icon: const Icon(Icons.play_lesson_outlined)),
                       ],
                     ),
                   )
@@ -470,10 +491,7 @@ class _MenuPage extends State<MenuPage> {
               ),
             ),
           )
-        ],
-      ),
-          ],
-        ),
+      ],    
       ),
     );
   }
