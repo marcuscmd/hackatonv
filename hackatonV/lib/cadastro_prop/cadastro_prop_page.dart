@@ -44,33 +44,44 @@ class _CadastroPropPage extends State<CadastroPropPage> {
 
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: SystemUiOverlay.values);
+    // Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
+        // width: size.width,
+        // height: size.height,
+        padding: const EdgeInsets.all(0),
         child: ListView(children: [
-          Container(
-            height: 250,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/backgroud.png'),
-                    fit: BoxFit.fill)),
-            child: Stack(children: [
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 100),
-                  width: 210,
-                  height: 210,
-                  //left: 75,
-                  child: const Icon(
-                    Icons.badge_outlined,
-                    size: 100,
+          Padding(
+            padding: const EdgeInsets.only(top: 0),
+            child: Container(
+              height: 250,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/backgroud.png'),
+                      fit: BoxFit.fill)),
+              child: Stack(children: [
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 100),
+                    width: 210,
+                    height: 210,
+                    //left: 75,
+                    child: const Icon(
+                      Icons.badge_outlined,
+                      size: 100,
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 0, left: 30, right: 30, bottom: 30),
+            padding:
+                const EdgeInsets.only(top: 0, left: 30, right: 30, bottom: 30),
             child: Column(
               children: [
                 Center(
@@ -280,7 +291,10 @@ class _CadastroPropPage extends State<CadastroPropPage> {
                         //     load();
                         //   });
                         // }
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MenuPage()));
                       },
                       child: const Text('Cadastrar',
                           style: TextStyle(
