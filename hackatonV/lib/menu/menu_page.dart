@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:hackaton/adubos/adubos_page.dart';
+import 'package:hackaton/cadastro_prop/cadastro_prop_page.dart';
+import 'package:hackaton/login/login_page.dart.dart';
 import 'package:hackaton/plantio/plantio_page.dart';
 import 'package:hackaton/propriedade/propriedade_page.dart';
 import 'package:http/http.dart' as http;
@@ -452,7 +454,9 @@ class _MenuPage extends State<MenuPage> {
                   Center(
                     heightFactor: 0.6,
                     child: FloatingActionButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CadastroPropPage()));
+                      },
                       backgroundColor: Colors.white,
                       child: Icon(Icons.add,
                       color: Colors.black,
@@ -468,22 +472,31 @@ class _MenuPage extends State<MenuPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
-                        }, 
-                        icon: const Icon(Icons.home)),
-                        IconButton(onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const PropriedadePage()));
                         }, 
-                        icon: const Icon(Icons.info_outline)),
+                        icon: const Icon(Icons.info_outline),
+                        color: Colors.black),
+                        SizedBox(
+                          height: size.height*0.06,
+                          child: IconButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const PlantioPage()));
+                          }, 
+                          icon: Image.asset('assets/plant.png')),
+                        ),
                         Container(width: size.width*.20,),
+                        SizedBox(
+                          height: size.height*0.06,
+                          child: IconButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const AduboPage()));
+                          }, 
+                          icon: Image.asset('assets/fertilizer.png'),
+                          ),
+                        ),
                         IconButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const AduboPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
                         }, 
-                        icon: const Icon(Icons.check_box_outlined)),
-                        IconButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PlantioPage()));
-                        }, 
-                        icon: const Icon(Icons.play_lesson_outlined)),
+                        icon: const Icon(Icons.exit_to_app),
+                        color: Colors.black,),
                       ],
                     ),
                   )

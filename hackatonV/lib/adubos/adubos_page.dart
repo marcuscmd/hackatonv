@@ -10,19 +10,19 @@ class AduboPage extends StatelessWidget {
       body: Container(
         child: ListView(children: [
           Container(
-            height: 320,
+            height: 250,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/backgroud.png'),
+                    image: AssetImage('assets/backgroud.png'),
                     fit: BoxFit.fill)),
             child: Stack(children: [
               Center(
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 150),
+                  margin: const EdgeInsets.only(bottom: 100),
                   width: 100,
-                  height: 100,
+                  height: 90,
                   child: Image.asset(
-                    'assets/images/fertilizer.png',
+                    'assets/fertilizer.png',
                     fit: BoxFit.contain,
                   ),
                 ),

@@ -25,7 +25,7 @@ class PropriedadePage extends StatelessWidget {
                   height: 30,
                   //left: 75,
                   child: const Icon(
-                    Icons.assignment_turned_in_outlined,
+                    Icons.info_outline,
                     size: 100,
                   ),
                 ),
@@ -78,10 +78,6 @@ class PropriedadePage extends StatelessWidget {
             padding: const EdgeInsets.all(25),
             child: Column(
               children: [
-                const Divider(
-                  color: Colors.black,
-                  thickness: 3,
-                ),
                 Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(

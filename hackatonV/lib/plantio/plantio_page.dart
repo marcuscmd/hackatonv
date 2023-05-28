@@ -12,22 +12,20 @@ class PlantioPage extends StatelessWidget {
       body: Container(
         child: ListView(children: [
           Container(
-            height: 320,
+            height: 250,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/backgroud.png'),
+                    image: AssetImage('assets/backgroud.png'),
                     fit: BoxFit.fill)),
             child: Stack(children: [
               Center(
                 child: Container(
-                  margin: const EdgeInsets.only(bottom: 150),
-                  width: 210,
-                  height: 210,
+                  margin: const EdgeInsets.only(bottom: 100),
+                  width: 120,
+                  height: 120,
                   //left: 75,
-                  child: const Icon(
-                    Icons.assignment_turned_in_outlined,
-                    size: 115,
-                  ),
+                  child: Image.asset('assets/plant.png',
+                  )
                 ),
               ),
             ]),
@@ -36,7 +34,7 @@ class PlantioPage extends StatelessWidget {
             child: Stack(children: [
               Center(
                 child: Container(
-                  margin: const EdgeInsets.only(top: 5),
+                  margin: const EdgeInsets.only(top: 0),
                   child: const Center(
                     child: Text(
                       'Informações de Plantio',
@@ -152,11 +150,13 @@ class PlantioPage extends StatelessWidget {
                     color: const Color.fromARGB(255, 192, 181, 170),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    '• Uma opção de adubo recomendada para o café catuaí é o NPK 20-05-20, que apresenta uma proporção balanceada de nutrientese é indicado para a fase de produção das plantas. Outra opção é o adubo orgânico, como esterco de avesou compostos, que pode fornecer nutrientes de forma mais gradual e sustentável para as plantas.',
-                    style: TextStyle(
+                  child: ListView(
+                    children: const [
+                      Text('• Uma opção de adubo recomendada para o café catuaí é o NPK 20-05-20, que apresenta uma proporção balanceada de nutrientese é indicado para a fase de produção das plantas. Outra opção é o adubo orgânico, como esterco de avesou compostos, que pode fornecer nutrientes de forma mais gradual e sustentável para as plantas.',
+                      style: TextStyle(
                       fontSize: 20,
-                    ),
+                    ),)
+                    ],
                   ),
                 ),
                 const SizedBox(height: 30),
