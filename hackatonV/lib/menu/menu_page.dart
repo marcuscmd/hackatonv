@@ -152,10 +152,11 @@ class _MenuPage extends State<MenuPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Image.asset(
                             "assets/pin.png",
@@ -168,7 +169,8 @@ class _MenuPage extends State<MenuPage> {
                             location,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 16.0,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold
                             ),
                           ),
                           IconButton(
@@ -279,14 +281,17 @@ class _MenuPage extends State<MenuPage> {
                   Text(
                     currentWeatherStatus,
                     style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 20.0,
+                      color: Colors.white,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   Text(
                     currentDate,
                     style: const TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18
                     ),
                   ),
                   Container(
@@ -335,6 +340,7 @@ class _MenuPage extends State<MenuPage> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
+                          color: Colors.black
                         ),
                       ),
                     ],
@@ -377,8 +383,8 @@ class _MenuPage extends State<MenuPage> {
                           width: 60,
                           decoration: BoxDecoration(
                               color: currentHour == forecastHour
-                                  ? Color.fromARGB(255, 86, 224, 232)
-                                  : _constants.primaryColor,
+                                  ? Color.fromARGB(255, 154, 190, 226)
+                                  : Color.fromARGB(255, 255, 255, 255),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(50)),
                               boxShadow: [
@@ -394,14 +400,14 @@ class _MenuPage extends State<MenuPage> {
                             children: [
                               Text(
                                 forecastTime,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 17,
-                                  color: _constants.greyColor,
+                                  color: Color.fromARGB(255, 0, 89, 179),
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               Image.asset(
-                                'assets/' + forecastWeatherIcon,
+                                'assets/$forecastWeatherIcon',
                                 width: 20,
                               ),
                               Row(
@@ -409,16 +415,16 @@ class _MenuPage extends State<MenuPage> {
                                 children: [
                                   Text(
                                     forecastTemperature,
-                                    style: TextStyle(
-                                      color: _constants.greyColor,
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 0, 89, 179),
                                       fontSize: 17,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     '°',
                                     style: TextStyle(
-                                      color: _constants.greyColor,
+                                      color: Color.fromARGB(255, 0, 89, 179),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 17,
                                       fontFeatures: const [

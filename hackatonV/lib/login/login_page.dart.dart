@@ -98,7 +98,7 @@ class LoginPage extends StatelessWidget {
                         Container(
                           height: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(25),
                             gradient: const LinearGradient(
                               colors: [                              
                                 Color.fromRGBO(114, 219, 233, 1),
@@ -111,7 +111,15 @@ class LoginPage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => const MenuPage()));
                               }, 
-                              child: const Text('Acessar'))
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color.fromRGBO(114, 219, 233, 1),
+                                minimumSize: const Size(300, 50),
+                              ),
+                              child: const Text('Acessar',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white
+                              )))
                           ),
                         ),
                         const SizedBox(height: 30),
