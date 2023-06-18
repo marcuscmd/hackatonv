@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../menu/menu_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+
+    String log = "https://api.weatherapi.com/v1/forecast.json?key=" +
+      'eab7a8799f49458d9ca20455231105' +
+      "&days=7&q=";
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +33,6 @@ class LoginPage extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  Positioned(
-                    width: 210,
-                    height: 210,
-                    left: 75,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/cafe.png')
-                        )
-                      ),
-                    )
-                  ),
                   Positioned(
                     child: Container(
                       margin: const EdgeInsets.only(top: 60),
@@ -123,7 +122,7 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        const Text('Esqueceu a Senha?',
+                        const Text('Registre aqui',
                         style: TextStyle(
                           color: Color.fromRGBO(37, 130, 173, 0.945),
                           fontWeight: FontWeight.bold,
