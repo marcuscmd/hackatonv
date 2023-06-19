@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
-import 'package:hackaton/views/adubos/adubos_page.dart';
-import 'package:hackaton/views/cadastro_prop/cadastro_prop_page.dart';
-import 'package:hackaton/views/login/login_page.dart';
-import 'package:hackaton/views/plantio/plantio_page.dart';
-import 'package:hackaton/views/propriedade/propriedade_page.dart';
+import 'package:hackaton/adubos/adubos_page.dart';
+import 'package:hackaton/cadastro_prop/cadastro_prop_page.dart';
+import 'package:hackaton/login/login_page.dart.dart';
+import 'package:hackaton/plantio/plantio_page.dart';
+import 'package:hackaton/propriedade/propriedade_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import '../../components/clima_item.dart';
+import '../components/clima_item.dart';
 import 'constantes.dart';
 
 class MenuPage extends StatefulWidget {

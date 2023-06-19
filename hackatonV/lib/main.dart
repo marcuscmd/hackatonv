@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'views/login/login_page.dart';
+import 'package:hackaton/propriedade/propriedade_page.dart';
+import 'login/login_page.dart.dart';
+import 'menu/menu_page.dart';
 
 void main() async {
   runApp(const MyApp());
