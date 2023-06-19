@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:hackaton/adubos/adubos_page.dart';
 import 'package:hackaton/cadastro_prop/cadastro_prop_page.dart';
-import 'package:hackaton/login/login_page.dart.dart';
+import 'package:hackaton/login/login_page.dart';
 import 'package:hackaton/plantio/plantio_page.dart';
 import 'package:hackaton/propriedade/propriedade_page.dart';
 import 'package:http/http.dart' as http;

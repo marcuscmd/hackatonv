@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/propriedade/propriedade_page.dart';
-import 'login/login_page.dart.dart';
+import 'login/login_page.dart';
 import 'menu/menu_page.dart';
 
 void main() async {
