@@ -1,4 +1,4 @@
-import 'package:hackaton/cadastro_prop/cadastro_prop.dart';
+import 'package:hackaton/models/tabela_propriedade.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as pat;
 import 'dart:async';

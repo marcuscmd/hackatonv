@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackaton/views/login/cadastro_login.dart';
 
 import '../menu/menu_page.dart';
 
@@ -122,11 +123,21 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        const Text('Registre aqui',
-                        style: TextStyle(
-                          color: Color.fromRGBO(37, 130, 173, 0.945),
-                          fontWeight: FontWeight.bold,
-                        ))
+                        Container(                        
+                          child: ElevatedButton(
+                            onPressed: () => {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistroPage()))
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromRGBO(212, 212, 212, 0)
+                            ),
+                            child: const Text('Registre aqui',
+                            style: TextStyle(
+                            color: Color.fromRGBO(37, 130, 173, 0.945),
+                            fontWeight: FontWeight.bold,
+                          )),
+                        )
+                      )
                 ],
               ))
           ]),
