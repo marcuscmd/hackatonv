@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:ionicons/ionicons.dart';
 
-class PropriedadePage extends StatelessWidget {
+class PropriedadePage extends StatefulWidget {
   const PropriedadePage({super.key});
+
+  @override
+  State<PropriedadePage> createState() => _PropriedadePage();
+}
+
+class _PropriedadePage extends State<PropriedadePage> {
+  int? selectvalue;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +47,16 @@ class PropriedadePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(top: 0, right: 10, bottom: 5),
+                      padding:
+                          const EdgeInsets.only(top: 0, right: 10, bottom: 5),
                       margin: const EdgeInsets.only(top: 0, right: 20),
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.border_color_outlined,
-                        size: 35,
-                        color: Colors.black,
-                        )
-                      ),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.border_color_outlined,
+                            size: 35,
+                            color: Colors.black,
+                          )),
                     ),
                   ],
                 ),
@@ -93,17 +102,39 @@ class PropriedadePage extends StatelessWidget {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(0),
+                        width: 350,
                         decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                          color: Color.fromRGBO(200, 200, 200, 1),
-                        ))),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Nome da Propiedade',
-                              hintStyle: TextStyle(color: Colors.grey[400])),
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(200, 200, 200, 1),
+                            ),
+                          ),
+                        ),
+                        child: TextButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Nome da Propiedade',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              Icon(
+                                Ionicons.chevron_down_outline,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                          onPressed: () {
+                            openDialog();
+                          },
+                          style: const ButtonStyle(
+                            alignment:
+                                Alignment.centerLeft, // Alinhamento à esquerda
+                          ),
                         ),
                       ),
                     ],
@@ -235,5 +266,92 @@ class PropriedadePage extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  Future openDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text('Selecione um plantio'),
+              content: Container(
+                height: 225,
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Prop1'),
+                      value: 1,
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue = value as int?;
+                        });
+                      },
+                    ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Trigo'),
+                    //   value: 2,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Algodão'),
+                    //   value: 3,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Soja'),
+                    //   value: 4,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text(
+                    'Ok',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onPressed: submit,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void submit() {
+    Navigator.of(context).pop();
   }
 }

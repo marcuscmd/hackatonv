@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
-class AduboPage extends StatelessWidget {
+class AduboPage extends StatefulWidget {
   const AduboPage({super.key});
 
+  @override
+  State<AduboPage> createState() => _AduboPage();
+}
+
+class _AduboPage extends State<AduboPage> {
+  int? selectvalue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +73,39 @@ class AduboPage extends StatelessWidget {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(0),
+                        width: 350,
                         decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                          color: Color.fromRGBO(200, 200, 200, 1),
-                        ))),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Nome da Propiedade',
-                              hintStyle: TextStyle(color: Colors.grey[400])),
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(200, 200, 200, 1),
+                            ),
+                          ),
+                        ),
+                        child: TextButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text(
+                                'Selecione uma Propriedade',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              Icon(
+                                Ionicons.chevron_down_outline,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                          onPressed: () {
+                            openDialog();
+                          },
+                          style: const ButtonStyle(
+                            alignment:
+                                Alignment.centerLeft, // Alinhamento à esquerda
+                          ),
                         ),
                       ),
                     ],
@@ -124,5 +153,92 @@ class AduboPage extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  Future openDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text('Selecione uma Propriedade'),
+              content: Container(
+                height: 225,
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Prop1'),
+                      value: 1,
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue = value as int?;
+                        });
+                      },
+                    ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Trigo'),
+                    //   value: 2,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Algodão'),
+                    //   value: 3,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                    // RadioListTile(
+                    //   autofocus: true,
+                    //   title: const Text('Soja'),
+                    //   value: 4,
+                    //   groupValue: selectvalue,
+                    //   activeColor: Colors.black,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectvalue = value as int?;
+                    //     });
+                    //   },
+                    // ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text(
+                    'Ok',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onPressed: submit,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void submit() {
+    Navigator.of(context).pop();
   }
 }
