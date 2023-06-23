@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackaton/login/login_registro.dart';
+import 'package:hackaton/register_login/login_registro.dart';
 
 import '../menu/menu_page.dart';
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:hackaton/menu/menu_page.dart';
-import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+// import 'package:intl/intl.dart';
+// import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../models/appCafe_dao.dart';
-import 'cadastro_prop.dart';
+// import '../models/appCafe_dao.dart';
+// import 'cadastro_prop.dart';
 
 class CadastroPropPage extends StatefulWidget {
   const CadastroPropPage({super.key});
@@ -22,27 +22,27 @@ class _CadastroPropPage extends State<CadastroPropPage> {
   TextEditingController nomePropriedade = TextEditingController();
   TextEditingController tamanhoHectar = TextEditingController();
   TextEditingController dataPlantio = TextEditingController();
-  double _valorHectar = 0;
+  //double _valorHectar = 0;
   String dataString = '';
 
-  final AppCafeDao dao = AppCafeDao();
+  //final AppCafeDao dao = AppCafeDao();
 
-  _CadastroPropPage() {
-    dao.connect().then((value) {
-      load();
-    });
-  }
+  // _CadastroPropPage() {
+  //   dao.connect().then((value) {
+  //     load();
+  //   });
+  // }
 
-  load() {
-    dao.list().then((value) {
-      setState(() {
-        prop = value.cast<CadastroPropPage>();
-        nomePropriedade.text = "";
-        tamanhoHectar.text = "";
-        dataPlantio.text = "";
-      });
-    });
-  }
+  // load() {
+  //   dao.list().then((value) {
+  //     setState(() {
+  //       prop = value.cast<CadastroPropPage>();
+  //       nomePropriedade.text = "";
+  //       tamanhoHectar.text = "";
+  //       dataPlantio.text = "";
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

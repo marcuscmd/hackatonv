@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.OpenApi;
 using UnifieldTech.Data;
 using UnifieldTech.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UnifieldTech.Endpoints;
 
@@ -16,6 +18,7 @@ public static class FazendaEndpoints
         {
             return await db.Fazenda.ToListAsync();
         })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
         .WithName("GetAllFazendas")
         .WithOpenApi();
 
@@ -27,7 +30,26 @@ public static class FazendaEndpoints
                     ? TypedResults.Ok(model)
                     : TypedResults.NotFound();
         })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
         .WithName("GetFazendaById")
+        .WithOpenApi();
+
+        group.MapGet("/buscar/cliente/cpf/{id}", async (string cpf, UnifieldTechContext db) =>
+        {
+            var cliente = await db.Cliente.AsNoTracking()
+                .FirstOrDefaultAsync(model => model.CPF == cpf);
+
+            if (cliente != null)
+            {
+                return cliente;
+            }
+            else
+            {
+                return null;
+            }
+        })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
+        .WithName("BuscarFazendaPorCpf")
         .WithOpenApi();
 
         group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int fazendaid, Fazenda fazenda, UnifieldTechContext db) =>
@@ -35,7 +57,6 @@ public static class FazendaEndpoints
             var affected = await db.Fazenda
                 .Where(model => model.FazendaID == fazendaid)
                 .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.FazendaID, fazenda.FazendaID)
                   .SetProperty(m => m.NomeFazenda, fazenda.NomeFazenda)
                   .SetProperty(m => m.Hectar, fazenda.Hectar)
                   .SetProperty(m => m.Cultivar, fazenda.Cultivar)
@@ -52,6 +73,7 @@ public static class FazendaEndpoints
 
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
         .WithName("UpdateFazenda")
         .WithOpenApi();
 
@@ -61,6 +83,7 @@ public static class FazendaEndpoints
             await db.SaveChangesAsync();
             return TypedResults.Created($"/api/Fazenda/{fazenda.FazendaID}", fazenda);
         })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
         .WithName("CreateFazenda")
         .WithOpenApi();
 
@@ -72,6 +95,7 @@ public static class FazendaEndpoints
 
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
+        .RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme })
         .WithName("DeleteFazenda")
         .WithOpenApi();
     }

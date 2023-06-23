@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\Hackathon_UniFieldTech-main\\UnifieldTech\\UnifieldTech.csproj",
+      "projectUniqueName": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\hackatonv\\Hackathon_UniFieldTech-main\\UnifieldTech\\UnifieldTech.csproj",
       "projectName": "UnifieldTech",
-      "projectPath": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\Hackathon_UniFieldTech-main\\UnifieldTech\\UnifieldTech.csproj",
+      "projectPath": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\hackatonv\\Hackathon_UniFieldTech-main\\UnifieldTech\\UnifieldTech.csproj",
       "packagesPath": "C:\\Users\\Marcus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\Hackathon_UniFieldTech-main\\UnifieldTech\\obj\\",
+      "outputPath": "C:\\Users\\Marcus\\Documents\\hackatonv-git\\hackatonv\\Hackathon_UniFieldTech-main\\UnifieldTech\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Marcus\\AppData\\Roaming\\NuGet\\NuGet.Config",
