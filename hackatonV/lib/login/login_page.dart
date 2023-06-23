@@ -11,10 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String log = "https://api.weatherapi.com/v1/forecast.json?key=" +
-      'eab7a8799f49458d9ca20455231105' +
-      "&days=7&q=";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,12 +123,13 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (context) => const LoginRegistro()),
                       );
                     },
-                    child: const Text('Registre aqui',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold
-                    ),),
+                    child: const Text(
+                      'Registre aqui',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ))

@@ -5,19 +5,18 @@ import 'package:get/get.dart';
 import '../models/banco.dart';
 import '../models/graos_db.dart';
 
-class LoginController extends GetxController{
+class LoginController extends GetxController {
   var showPassword = true.obs;
 
   var emailController = TextEditingController(text: '');
   var passwordController = TextEditingController(text: '');
   final db = Graos();
   List<Usuario> usuarios = [];
-  
+
   @override
   void onInit() {
     super.onInit();
-    db.connect().then((value) async {
-    });
+    db.connect().then((value) async {});
   }
 
   void toggleShowPassword() {
@@ -25,14 +24,15 @@ class LoginController extends GetxController{
   }
 
   Future<String> goTologin() async {
-    var usuario = await db.getUsuarios();
+    var usuario =
+        await db.getUsuario(emailController.text, passwordController.text);
 
     if (usuario != null) {
-       Future.delayed(const Duration(milliseconds: 1), () {
-          Get.offAllNamed('/menu');
-        });
+      Future.delayed(const Duration(milliseconds: 1), () {
+        Get.offAllNamed('/menu');
+      });
       return "ok";
-    } 
+    }
 
     return "Senha ou Email incorretos";
   }
@@ -44,8 +44,8 @@ class LoginController extends GetxController{
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 4,
-        backgroundColor: const Color.fromARGB(255, 192, 123, 123),
-        textColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 104, 197, 220),
+        textColor: const Color.fromARGB(255, 0, 0, 0),
         fontSize: 15.0);
   }
 

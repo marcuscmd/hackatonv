@@ -58,35 +58,28 @@ class Graos {
     );
   }
 
-  Future<List<Usuario>> getUsuarios() async {
+  Future<Usuario?> getUsuario(String usuario, String senha) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('usuarios');
-    return List.generate(maps.length, (index) {
-      return Usuario(
-        id: maps[index]['id'],
-        nome: maps[index]['nome'],
-        email: maps[index]['email'],
-        dataNasc: maps[index]['dataNasc'],
-        nomeUsuario: maps[index]['nomeUsuario'],
-        senha: maps[index]['senha'],
-      );
-    });
+    List<Map> maps = await db.query('usuarios',
+        columns: ['id', 'nome', 'email', 'dataNasc', 'nomeUsuario', 'senha'],
+        where: "email = ?",
+        whereArgs: [usuario]);
+    if (maps.isNotEmpty) {
+      return Usuario.fromMap(maps.first);
+    } else {
+      return null;
+    }
   }
 
   Future<List<Usuario>> getAllUsuarios() async {
-  final db = await database;
-  final List<Map<String, dynamic>> maps = await db.query('usuarios');
-  return List.generate(maps.length, (index) {
-    return Usuario(
-      id: maps[index]['id'],
-      nome: maps[index]['nome'],
-      email: maps[index]['email'],
-      dataNasc: maps[index]['dataNasc'],
-      nomeUsuario: maps[index]['nomeUsuario'],
-      senha: maps[index]['senha'],
-    );
-  });
-}
+    final db = await database;
+    List listMap = await db.rawQuery("SELECT * FROM tabelaUsuarios");
+    List<Usuario> listUsuarios = [];
+    for (Map m in listMap) {
+      listUsuarios.add(Usuario.fromMap(m));
+    }
+    return listUsuarios;
+  }
 
   Future<int> insertFazenda(Fazenda fazenda) async {
     final db = await database;

@@ -1,19 +1,21 @@
 class Usuario {
-  int id;
-  String nome;
-  String email;
-  String dataNasc;
-  String nomeUsuario;
-  String senha;
+  late int id;
+  late String nome;
+  late String email;
+  late String dataNasc;
+  late String nomeUsuario;
+  late String senha;
 
-  Usuario({
-    required this.id,
-    required this.nome,
-    required this.email,
-    required this.dataNasc,
-    required this.nomeUsuario,
-    required this.senha,
-  });
+  Usuario(this.nome, this.email, this.dataNasc, this.nomeUsuario, this.senha);
+
+  Usuario.fromMap(Map map) {
+    id = map[id];
+    nome = map[nome];
+    dataNasc = map[dataNasc];
+    nomeUsuario = map[nomeUsuario];
+    email = map[email];
+    senha = map[senha];
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -37,13 +39,13 @@ class Fazenda {
   int idUsuario; // Chave estrangeira
 
   Fazenda({
-   required this.fazendaID,
-   required this.nomeFazenda,
-   required this.hectar,
-   required this.tipoPlantio,
-   required this.cidade,
-   required this.estado,
-   required this.idUsuario,
+    required this.fazendaID,
+    required this.nomeFazenda,
+    required this.hectar,
+    required this.tipoPlantio,
+    required this.cidade,
+    required this.estado,
+    required this.idUsuario,
   });
 
   Map<String, dynamic> toMap() {
