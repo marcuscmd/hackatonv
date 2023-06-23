@@ -73,6 +73,21 @@ class Graos {
     });
   }
 
+  Future<List<Usuario>> getAllUsuarios() async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query('usuarios');
+  return List.generate(maps.length, (index) {
+    return Usuario(
+      id: maps[index]['id'],
+      nome: maps[index]['nome'],
+      email: maps[index]['email'],
+      dataNasc: maps[index]['dataNasc'],
+      nomeUsuario: maps[index]['nomeUsuario'],
+      senha: maps[index]['senha'],
+    );
+  });
+}
+
   Future<int> insertFazenda(Fazenda fazenda) async {
     final db = await database;
     return await db.insert('fazendas', fazenda.toMap());
