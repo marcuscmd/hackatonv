@@ -1,3 +1,11 @@
+const String tabelaUsuario = "tabelaUsuario";
+const String idColumn = "idColumn";
+const String nomeCompletoColumn = "nomeCompletoColumn";
+const String dataNascimentoColumn = "dataNascimentoColumn";
+const String usuarioColumn = "usuarioColumn";
+const String emailColumn = "emailColumn";
+const String senhaColumn = "senhaColumn";
+
 class Usuario {
   late int id;
   late String nome;
@@ -9,22 +17,21 @@ class Usuario {
   Usuario(this.nome, this.email, this.dataNasc, this.nomeUsuario, this.senha);
 
   Usuario.fromMap(Map map) {
-    id = map[id];
-    nome = map[nome];
-    dataNasc = map[dataNasc];
-    nomeUsuario = map[nomeUsuario];
-    email = map[email];
-    senha = map[senha];
+    id = map[idColumn];
+    nome = map[nomeCompletoColumn];
+    dataNasc = map[dataNascimentoColumn];
+    nomeUsuario = map[usuarioColumn];
+    email = map[emailColumn];
+    senha = map[senhaColumn];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'nome': nome,
-      'email': email,
-      'dataNasc': dataNasc,
-      'nomeUsuario': nomeUsuario,
-      'senha': senha,
+      nomeCompletoColumn: nome,
+      dataNascimentoColumn: dataNasc,
+      usuarioColumn: nomeUsuario,
+      emailColumn: email,
+      senhaColumn: senha
     };
   }
 }

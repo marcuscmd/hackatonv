@@ -1,4 +1,3 @@
-import 'package:hackaton/cadastro_prop/cadastro_prop.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as pat;
 import 'dart:async';
@@ -12,21 +11,43 @@ class Graos {
 
   //Método para conexão com o banco de dados
   Future connect() async {
-    var databasesPath = await openDatabase(
-      pat.join(await getDatabasesPath(), databaseName),
-      onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE usuarios(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
-            email TEXT,
-            dataNasc TEXT,
-            nomeUsuario TEXT,
-            senha TEXT
-          )
-        ''');
+    var databasesPath = await getDatabasesPath();
+    String path = pat.join(databasesPath, databaseName);
+     database = openDatabase(
+      path,
+      version: 2,
+      onCreate:(db, version) {
+        return _criarTabelas(db);
+      },
+      onUpgrade: (db, oldVersion, newVersion) {
+        if (oldVersion < newVersion) {
+          return _atualizarTabelas(db);
+        }
+      },
+    );
+  }
 
-        await db.execute('''
+  void _atualizarTabelas(Database db) {
+    _criarTabelas(db);
+  }
+
+  void _criarTabelas(Database db) {
+    _createUsuariosTable(db);
+    _createFazendasTable(db);
+  }
+
+  void _createUsuariosTable(Database db) {
+    db.execute("CREATE TABLE IF NOT EXISTS $tabelaUsuario ( "
+        "$idColumn INTEGER PRIMARY KEY,"
+        "$nomeCompletoColumn TEXT,"
+        "$dataNascimentoColumn TEXT,"
+        "$usuarioColumn TEXT,"
+        "$emailColumn TEXT,"
+        "$senhaColumn TEXT)");
+  }
+
+  void _createFazendasTable(Database db) {
+    db.execute('''
           CREATE TABLE fazendas(
             fazendaID INTEGER PRIMARY KEY AUTOINCREMENT,
             nomeFazenda TEXT,
@@ -38,20 +59,17 @@ class Graos {
             FOREIGN KEY(idUsuario) REFERENCES usuarios(id)
           )
         ''');
-      },
-      version: 1,
-    );
   }
 
   Future<int> insertUsuario(Usuario usuario) async {
     final db = await database;
-    return await db.insert('usuarios', usuario.toMap());
+    return await db.insert(tabelaUsuario, usuario.toMap());
   }
 
   Future<int> updateUsuario(Usuario usuario) async {
     final db = await database;
     return await db.update(
-      'usuarios',
+      tabelaUsuario,
       usuario.toMap(),
       where: 'id = ?',
       whereArgs: [usuario.id],
@@ -60,7 +78,7 @@ class Graos {
 
   Future<Usuario?> getUsuario(String usuario, String senha) async {
     final db = await database;
-    List<Map> maps = await db.query('usuarios',
+    List<Map> maps = await db.query(tabelaUsuario,
         columns: ['id', 'nome', 'email', 'dataNasc', 'nomeUsuario', 'senha'],
         where: "email = ?",
         whereArgs: [usuario]);

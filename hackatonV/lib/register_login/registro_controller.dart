@@ -27,7 +27,6 @@ class LoginCadastroController extends GetxController {
   Future<String> cadastro() async {
     try {
       if (nomeCompletoController.text == "" ||
-          userController.text == "" ||
           emailController.text == "" ||
           passwordController.text == "") {
         return "Preencha todos os campos";
