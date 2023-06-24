@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackaton/perdas/perdas_page.dart';
 import 'login/login_page.dart';
 
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Login(),
+      home: const PerdasPage(),
     );
   }
 }
