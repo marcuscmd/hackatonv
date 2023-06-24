@@ -1,12 +1,12 @@
-const String tabelaUsuario = "tabelaUsuario";
-const String idColumn = "idColumn";
-const String nomeCompletoColumn = "nomeCompletoColumn";
-const String dataNascimentoColumn = "dataNascimentoColumn";
-const String usuarioColumn = "usuarioColumn";
-const String emailColumn = "emailColumn";
-const String senhaColumn = "senhaColumn";
-
 class Usuario {
+  static const String tabelaUsuario = "tabelaUsuarios";
+  static const String idColumn = "idColumn";
+  static const String nomeCompletoColumn = "nomeCompletoColumn";
+  static const String dataNascimentoColumn = "dataNascimentoColumn";
+  static const String usuarioColumn = "usuarioColumn";
+  static const String emailColumn = "emailColumn";
+  static const String senhaColumn = "senhaColumn";
+
   late int id;
   late String nome;
   late String email;
@@ -37,13 +37,22 @@ class Usuario {
 }
 
 class Fazenda {
-  int fazendaID;
-  String nomeFazenda;
-  double hectar;
-  String tipoPlantio;
-  String cidade;
-  String estado;
-  int idUsuario; // Chave estrangeira
+  static const String tabelaFazenda = "tabelaFazenda";
+  static const String idColumn = "idColumn";
+  static const String nomeFarmColumn = "nomeFarmColumn";
+  static const String hectarColumn = "hectarColumn";
+  static const String tipoColumn = "tipoColumn";
+  static const String cidadeColumn = "cidadeColumn";
+  static const String estadoColumn = "estadoColumn";
+  static const String userIdColumn = "userIdColumn";
+
+  final int fazendaID;
+  final String nomeFazenda;
+  final double hectar;
+  final String tipoPlantio;
+  final String cidade;
+  final String estado;
+  final int idUsuario; // Chave estrangeira
 
   Fazenda({
     required this.fazendaID,

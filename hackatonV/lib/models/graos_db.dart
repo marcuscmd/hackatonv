@@ -5,18 +5,20 @@ import 'dart:async';
 import 'banco.dart';
 
 class Graos {
+  static final Graos _instance = Graos.internal();
+  factory Graos() => _instance;
+  Graos.internal();
   static const String databaseName = 'graos.db';
-
   late Future<Database> database;
 
   //Método para conexão com o banco de dados
   Future connect() async {
     var databasesPath = await getDatabasesPath();
     String path = pat.join(databasesPath, databaseName);
-     database = openDatabase(
+    database = openDatabase(
       path,
-      version: 2,
-      onCreate:(db, version) {
+      version: 3,
+      onCreate: (db, version) {
         return _criarTabelas(db);
       },
       onUpgrade: (db, oldVersion, newVersion) {
@@ -37,50 +39,53 @@ class Graos {
   }
 
   void _createUsuariosTable(Database db) {
-    db.execute("CREATE TABLE IF NOT EXISTS $tabelaUsuario ( "
-        "$idColumn INTEGER PRIMARY KEY,"
-        "$nomeCompletoColumn TEXT,"
-        "$dataNascimentoColumn TEXT,"
-        "$usuarioColumn TEXT,"
-        "$emailColumn TEXT,"
-        "$senhaColumn TEXT)");
+    db.execute("CREATE TABLE IF NOT EXISTS ${Usuario.tabelaUsuario} ( "
+        "${Usuario.idColumn} INTEGER PRIMARY KEY,"
+        "${Usuario.nomeCompletoColumn} TEXT,"
+        "${Usuario.dataNascimentoColumn} TEXT,"
+        "${Usuario.usuarioColumn} TEXT,"
+        "${Usuario.emailColumn} TEXT,"
+        "${Usuario.senhaColumn} TEXT)");
   }
 
   void _createFazendasTable(Database db) {
-    db.execute('''
-          CREATE TABLE fazendas(
-            fazendaID INTEGER PRIMARY KEY AUTOINCREMENT,
-            nomeFazenda TEXT,
-            hectare REAL,
-            tipoPlantio TEXT,
-            cidade TEXT,
-            estado TEXT,
-            idUsuario INTEGER,
-            FOREIGN KEY(idUsuario) REFERENCES usuarios(id)
-          )
-        ''');
+    db.execute("CREATE TABLE IF NOT EXISTS ${Fazenda.tabelaFazenda} ( "
+        "${Fazenda.idColumn} INTEGER PRIMARY KEY,"
+        "${Fazenda.nomeFarmColumn} TEXT,"
+        "${Fazenda.hectarColumn} REAL,"
+        "${Fazenda.tipoColumn} TEXT,"
+        "${Fazenda.cidadeColumn} TEXT,"
+        "${Fazenda.estadoColumn} TEXT,"
+        "${Fazenda.userIdColumn} REFERENCES usuarios(id))");
   }
 
   Future<int> insertUsuario(Usuario usuario) async {
     final db = await database;
-    return await db.insert(tabelaUsuario, usuario.toMap());
+    return await db.insert(Usuario.tabelaUsuario, usuario.toMap());
   }
 
   Future<int> updateUsuario(Usuario usuario) async {
     final db = await database;
     return await db.update(
-      tabelaUsuario,
+      Usuario.tabelaUsuario,
       usuario.toMap(),
-      where: 'id = ?',
+      where: '${Usuario.idColumn} = ?',
       whereArgs: [usuario.id],
     );
   }
 
   Future<Usuario?> getUsuario(String usuario, String senha) async {
     final db = await database;
-    List<Map> maps = await db.query(tabelaUsuario,
-        columns: ['id', 'nome', 'email', 'dataNasc', 'nomeUsuario', 'senha'],
-        where: "email = ?",
+    List<Map> maps = await db.query(Usuario.tabelaUsuario,
+        columns: [
+          Usuario.idColumn,
+          Usuario.nomeCompletoColumn,
+          Usuario.emailColumn,
+          Usuario.dataNascimentoColumn,
+          Usuario.usuarioColumn,
+          Usuario.senhaColumn
+        ],
+        where: '${Usuario.emailColumn} = ?',
         whereArgs: [usuario]);
     if (maps.isNotEmpty) {
       return Usuario.fromMap(maps.first);
@@ -101,15 +106,16 @@ class Graos {
 
   Future<int> insertFazenda(Fazenda fazenda) async {
     final db = await database;
-    return await db.insert('fazendas', fazenda.toMap());
+    int id = await db.insert(Fazenda.tabelaFazenda, fazenda.toMap());
+    return id;
   }
 
   Future<int> updateFazenda(Fazenda fazenda) async {
     final db = await database;
     return await db.update(
-      'fazendas',
+      Fazenda.tabelaFazenda,
       fazenda.toMap(),
-      where: 'fazendaID = ?',
+      where: '${Fazenda.idColumn} = ?',
       whereArgs: [fazenda.fazendaID],
     );
   }

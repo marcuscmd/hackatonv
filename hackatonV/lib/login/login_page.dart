@@ -152,7 +152,6 @@ class Login extends GetView<LoginController> {
                                   ..showSnackBar(snackBar);
                               } else {
                                 controller.toast('Logado com Sucesso!');
-                                Get.toNamed('/menu');
                               }
                             },
                             style: ElevatedButton.styleFrom(
