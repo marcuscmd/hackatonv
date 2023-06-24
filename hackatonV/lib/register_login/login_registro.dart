@@ -5,8 +5,7 @@ import 'package:hackaton/register_login/registro_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'dart:ui' as ui;
-
-import '../menu/menu_page.dart';
+import '../login/login_page.dart';
 
 var newFormat = DateFormat("dd/MM/y");
 var dt = DateTime.now();
@@ -18,7 +17,7 @@ class LoginRegistro extends GetView<LoginCadastroController> {
 
   @override
   Widget build(BuildContext context) {
-   return const MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Directionality(
         textDirection: ui.TextDirection.ltr,
@@ -39,7 +38,8 @@ class LoginCadastroState extends StatefulWidget {
   _LoginRegistro createState() => _LoginRegistro();
 }
 
-class _LoginRegistro extends State<LoginCadastroState> with SingleTickerProviderStateMixin {
+class _LoginRegistro extends State<LoginCadastroState>
+    with SingleTickerProviderStateMixin {
   LoginCadastroController controller = Get.put(
     LoginCadastroController(),
   );
@@ -317,9 +317,11 @@ class _LoginRegistro extends State<LoginCadastroState> with SingleTickerProvider
                           } else {
                             // ignore: use_build_context_synchronously
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const MenuPage()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Login(),
+                              ),
+                            );
                           }
                         },
                         style: ElevatedButton.styleFrom(

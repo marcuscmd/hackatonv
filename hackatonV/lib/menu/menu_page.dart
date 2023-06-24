@@ -499,7 +499,7 @@ class _MenuPage extends State<MenuPage> {
                           ),
                         ),
                         IconButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
                         }, 
                         icon: const Icon(Icons.exit_to_app),
                         color: Colors.black,),
