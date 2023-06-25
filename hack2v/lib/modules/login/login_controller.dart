@@ -1,5 +1,65 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-class LoginController extends GetxController{
+import '../../providers/database_user.dart';
 
+class LoginController extends GetxController {
+  var showPassword = true.obs;
+
+  var emailController = TextEditingController(text: '');
+  var passwordController = TextEditingController(text: '');
+  var userId = 0.obs;
+  final db = DataBaseProvider();
+  List<Usuario> usuarios = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    db.initDb().then((value) async {});
+  }
+
+  void toggleShowPassword() {
+    showPassword.value = !showPassword.value;
+  }
+
+  Future<String> goTologin() async {
+    var usuario =
+        await db.getUsuario(emailController.text, passwordController.text);
+
+    if (usuario != null) {
+      userId.value =
+          usuario.id; // Armazena o ID do usuário atual na variável userId
+    }
+
+    if (usuario != null) {
+      Future.delayed(const Duration(milliseconds: 1), () {
+        Get.offAllNamed('/menu');
+      });
+      return "ok";
+    }
+
+    return "Senha ou Email incorretos";
+  }
+
+  Future<bool?> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 4,
+        backgroundColor: const Color.fromARGB(255, 192, 123, 123),
+        textColor: Colors.white,
+        fontSize: 15.0);
+  }
+
+  load() {
+    db.getAllUsuarios().then((value) {
+      usuarios = value;
+      emailController.text = "";
+      passwordController.text = "";
+    });
+  }
 }

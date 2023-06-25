@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hack2v/modules/prop_cadastro/prop_cadastro_controller.dart';
+import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 // import 'package:flutter/services.dart';
 // import 'package:intl/intl.dart';
 // import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../../core/app_theme.dart';
 
 // import '../models/appCafe_dao.dart';
 // import 'cadastro_prop.dart';
 
+var newFormat = DateFormat("dd/MM/y");
+var dt = DateTime.now();
+String updatedDt = newFormat.format(dt);
+String data = DateTime.now().toIso8601String();
 
 class PropCadastroPage extends GetView<PropCadastroController> {
   const PropCadastroPage({super.key});
@@ -23,13 +31,11 @@ class PropCadastroPage extends GetView<PropCadastroController> {
       debugShowCheckedModeBanner: false,
       home: const Directionality(
         textDirection: ui.TextDirection.ltr,
-        child: PropCadastroState(
-        ),
+        child: PropCadastroState(),
       ),
     );
   }
 }
-
 
 class PropCadastroState extends StatefulWidget {
   const PropCadastroState({super.key});
@@ -39,7 +45,42 @@ class PropCadastroState extends StatefulWidget {
 }
 
 class _PropCadastroState extends State<PropCadastroState> {
-  int? selectvalue;
+  PropCadastroController _controller = PropCadastroController();
+
+  var mask = MaskTextInputFormatter(mask: "##/##/####");
+
+  Future<void> _data(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: dt,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      cancelText: "CANCELAR",
+      builder: (context, child) => Theme(
+        data: ThemeData.light().copyWith(
+          primaryColor: Colors.redAccent,
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          colorScheme: const ColorScheme.light(
+            primary: Colors.redAccent,
+          ).copyWith(
+            secondary: Colors.redAccent,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        dt = picked;
+        data = dt.toIso8601String();
+        _controller.dataController.text = data;
+        updatedDt = newFormat.format(picked);
+      });
+    }
+  }
+
+  String selectvalue = '';
   List<PropCadastroState> prop = [];
 
   TextEditingController nomePropriedade = TextEditingController();
@@ -47,25 +88,6 @@ class _PropCadastroState extends State<PropCadastroState> {
   TextEditingController dataPlantio = TextEditingController();
   //double _valorHectar = 0;
   String dataString = '';
-
-  //final AppCafeDao dao = AppCafeDao();
-
-  // _CadastroPropPage() {
-  //   dao.connect().then((value) {
-  //     load();
-  //   });
-  // }
-
-  // load() {
-  //   dao.list().then((value) {
-  //     setState(() {
-  //       prop = value.cast<CadastroPropPage>();
-  //       nomePropriedade.text = "";
-  //       tamanhoHectar.text = "";
-  //       dataPlantio.text = "";
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +174,7 @@ class _PropCadastroState extends State<PropCadastroState> {
                               border: InputBorder.none,
                               hintText: 'Nome da Propiedade',
                               hintStyle: TextStyle(color: Colors.grey[400])),
-                          controller: nomePropriedade,
+                          controller: _controller.nomePropController,
                           validator: (value) {
                             if (value.toString().isEmpty) {
                               return 'Insira o nome de uma propriedade';
@@ -190,7 +212,7 @@ class _PropCadastroState extends State<PropCadastroState> {
                             border: InputBorder.none,
                             hintText: 'Tamanho do Hectar',
                             hintStyle: TextStyle(color: Colors.grey[400])),
-                        controller: tamanhoHectar,
+                        controller: _controller.hectarController,
                         validator: (value) {
                           if (value.toString().isEmpty) {
                             return 'Insira o tamanho do hectare';
@@ -212,44 +234,50 @@ class _PropCadastroState extends State<PropCadastroState> {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: const [
                         BoxShadow(
-                            color: Color.fromRGBO(19, 149, 167, 0.3),
-                            blurRadius: 20.0,
-                            offset: Offset(0, 10))
+                          color: Color.fromRGBO(19, 149, 167, 0.3),
+                          blurRadius: 20.0,
+                          offset: Offset(0, 10),
+                        )
                       ]),
-                  child: Column(children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 5, bottom: 5),
+                        padding: const EdgeInsets.all(0),
+                        decoration: const BoxDecoration(
                           border: Border(
-                              bottom: BorderSide(
-                        color: Color.fromRGBO(200, 200, 200, 1),
-                      ))),
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        // inputFormatters: [
-                        //   FilteringTextInputFormatter.digitsOnly,
-                        //   LengthLimitingTextInputFormatter(8),
-                        //   MaskTextInputFormatter(
-                        //     mask: '00/00/0000',
-                        //     filter: {"0": RegExp(r'[0-9]')},
-                        //   ),
-                        // ],
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Data do Plantio',
-                          hintStyle: TextStyle(color: Colors.grey[400]),
+                            bottom: BorderSide(
+                              color: Color.fromRGBO(200, 200, 200, 1),
+                            ),
+                          ),
                         ),
-                        controller: dataPlantio,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Insira a data de plantio';
-                          }
-                          return null;
-                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              title: const Text(
+                                "Data do Plantio",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              isThreeLine: false,
+                              subtitle: Text(
+                                updatedDt,
+                                style: const TextStyle(
+                                    fontSize: 15, color: Colors.black),
+                              ),
+                              trailing: const Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.grey,
+                              ),
+                              onTap: () => _data(context),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ]),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 15),
                 Container(
@@ -278,15 +306,15 @@ class _PropCadastroState extends State<PropCadastroState> {
                       child: TextButton(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
+                          children: [
                             Text(
-                              'Tipo de Plantio',
-                              style: TextStyle(
+                              _controller.tipoController,
+                              style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 17,
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Ionicons.chevron_down_outline,
                               color: Colors.grey,
                             ),
@@ -320,23 +348,8 @@ class _PropCadastroState extends State<PropCadastroState> {
                         backgroundColor: Color.fromARGB(82, 114, 219, 233),
                       ),
                       onPressed: () {
-                        // if (nomePropriedade.text.trim() != '') {
-                        //   //String dataString = dataPlantio.text;
-                        //   DateTime dataPlantio =
-                        //       DateFormat('dd/MM/yyyy').parse(PegarData());
-                        //   int dataTimestamp =
-                        //       dataPlantio.millisecondsSinceEpoch;
-                        //   var dep = CadastroProp(
-                        //     nomePropriedade: nomePropriedade.text,
-                        //     dataPlantio: dataTimestamp,
-                        //     tamanhoHectar: _valorHectar =
-                        //         double.parse(tamanhoHectar.text),
-                        //   );
-                        //   dao.insert(dep).then((value) {
-                        //     load();
-                        //   });
-                        // }
-                        },
+                        _controller.cadastro();
+                      },
                       child: const Text('Cadastrar',
                           style: TextStyle(
                             color: Colors.white,
@@ -355,11 +368,6 @@ class _PropCadastroState extends State<PropCadastroState> {
     );
   }
 
-  String PegarData() {
-    String dataString = dataPlantio.text;
-    return dataString;
-  }
-
   Future openDialog() async {
     await showDialog(
       context: context,
@@ -376,48 +384,48 @@ class _PropCadastroState extends State<PropCadastroState> {
                     RadioListTile(
                       autofocus: true,
                       title: const Text('Arroz'),
-                      value: 1,
+                      value: 'Arroz',
                       groupValue: selectvalue,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
-                          selectvalue = value as int?;
+                          selectvalue = value as String;
                         });
                       },
                     ),
                     RadioListTile(
                       autofocus: true,
                       title: const Text('Trigo'),
-                      value: 2,
+                      value: 'Trigo',
                       groupValue: selectvalue,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
-                          selectvalue = value as int?;
+                          selectvalue = value as String;
                         });
                       },
                     ),
                     RadioListTile(
                       autofocus: true,
                       title: const Text('Algodão'),
-                      value: 3,
+                      value: 'Algodão',
                       groupValue: selectvalue,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
-                          selectvalue = value as int?;
+                          selectvalue = value as String;
                         });
                       },
                     ),
                     RadioListTile(
                       autofocus: true,
                       title: const Text('Soja'),
-                      value: 4,
+                      value: 'Soja',
                       groupValue: selectvalue,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
-                          selectvalue = value as int?;
+                          selectvalue = value as String;
                         });
                       },
                     ),
@@ -444,6 +452,7 @@ class _PropCadastroState extends State<PropCadastroState> {
   }
 
   void submit() {
-    Navigator.of(context).pop();
+    _controller.tipoController = selectvalue;
+    Get.back();
   }
 }

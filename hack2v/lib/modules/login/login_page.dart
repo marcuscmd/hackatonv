@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -64,6 +65,7 @@ class LoginPage extends GetView<LoginController> {
                             ),
                           ),
                           child: TextField(
+                            controller: controller.emailController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -85,6 +87,7 @@ class LoginPage extends GetView<LoginController> {
                             ),
                           ),
                           child: TextFormField(
+                            controller: controller.passwordController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Senha',
@@ -111,21 +114,45 @@ class LoginPage extends GetView<LoginController> {
                       ),
                     ),
                     child: Center(
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(114, 219, 233, 1),
-                              minimumSize: const Size(300, 50),
-                            ),
-                            child: const Text('Acessar',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white)))),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          var result = await controller.goTologin();
+                          if (result != 'ok') {
+                            final snackBar = SnackBar(
+                              elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              content: AwesomeSnackbarContent(
+                                title: 'Erro ao Logar!',
+                                message: result.toString(),
+                                contentType: ContentType.failure,
+                                color: const Color.fromARGB(255, 192, 0, 0),
+                              ),
+                            );
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
+                          } else {
+                            controller.toast('Logado com Sucesso!');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromRGBO(114, 219, 233, 1),
+                          minimumSize: const Size(300, 50),
+                        ),
+                        child: const Text(
+                          'Acessar',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed('/menu');
+                      Get.toNamed('/cadastro');
                     },
                     child: const Text(
                       'Registre aqui',

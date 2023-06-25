@@ -43,37 +43,37 @@ class _LoginRegistro extends State<CadastroState>
   CadastroController controller = Get.put(
     CadastroController(),
   );
-  // var mask = MaskTextInputFormatter(mask: "##/##/####");
-  // Future<void> _data(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: dt,
-  //     firstDate: DateTime(1800),
-  //     lastDate: DateTime.now(),
-  //     cancelText: "CANCELAR",
-  //     builder: (context, child) => Theme(
-  //       data: ThemeData.light().copyWith(
-  //         primaryColor: Colors.redAccent,
-  //         buttonTheme:
-  //             const ButtonThemeData(textTheme: ButtonTextTheme.primary),
-  //         colorScheme: const ColorScheme.light(
-  //           primary: Colors.redAccent,
-  //         ).copyWith(
-  //           secondary: Colors.redAccent,
-  //         ),
-  //       ),
-  //       child: child!,
-  //     ),
-  //   );
-  //   if (picked != null) {
-  //     setState(() {
-  //       dt = picked;
-  //       data = dt.toIso8601String();
-  //       controller.dataNascimentoController.text = data;
-  //       updatedDt = newFormat.format(picked);
-  //     });
-  //   }
-  // }
+  var mask = MaskTextInputFormatter(mask: "##/##/####");
+  Future<void> _data(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: dt,
+      firstDate: DateTime(1800),
+      lastDate: DateTime.now(),
+      cancelText: "CANCELAR",
+      builder: (context, child) => Theme(
+        data: ThemeData.light().copyWith(
+          primaryColor: Colors.redAccent,
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          colorScheme: const ColorScheme.light(
+            primary: Colors.redAccent,
+          ).copyWith(
+            secondary: Colors.redAccent,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        dt = picked;
+        data = dt.toIso8601String();
+        controller.dataNascimentoController.text = data;
+        updatedDt = newFormat.format(picked);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +137,7 @@ class _LoginRegistro extends State<CadastroState>
                             ),
                           ),
                           child: TextField(
-                            //controller: controller.nomeCompletoController,
+                            controller: controller.nomeCompletoController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Nome',
@@ -177,7 +177,7 @@ class _LoginRegistro extends State<CadastroState>
                             ),
                           ),
                           child: TextField(
-                            //controller: controller.emailController,
+                            controller: controller.emailController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Email',
@@ -235,7 +235,7 @@ class _LoginRegistro extends State<CadastroState>
                                   Icons.arrow_drop_down,
                                   color: Colors.grey,
                                 ),
-                                //onTap: () => _data(context),
+                                onTap: () => _data(context),
                               ),
                             ],
                           ),
@@ -270,7 +270,7 @@ class _LoginRegistro extends State<CadastroState>
                             ),
                           ),
                           child: TextField(
-                            //controller: controller.nomeCompletoController,
+                            controller: controller.userController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Usuario',
@@ -310,7 +310,7 @@ class _LoginRegistro extends State<CadastroState>
                             ),
                           ),
                           child: TextField(
-                            //controller: controller.passwordController,
+                            controller: controller.passwordController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Senha',
@@ -337,7 +337,27 @@ class _LoginRegistro extends State<CadastroState>
                     ),
                     child: Center(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          var result = await controller.cadastro();
+                          if (result != "ok") {
+                            final snackBar = SnackBar(
+                              elevation: 0,
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.transparent,
+                              content: AwesomeSnackbarContent(
+                                title: 'Erro ao Cadastrar!',
+                                message: result.toString(),
+                                contentType: ContentType.failure,
+                              ),
+                            );
+                            // ignore: use_build_context_synchronously
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
+                          } else {
+                            Get.toNamed('/login');
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               const Color.fromRGBO(114, 219, 233, 1),
