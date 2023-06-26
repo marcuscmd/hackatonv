@@ -25,4 +25,12 @@ class PropInfoController extends GetxController {
 
     return properties;
   }
+
+  Future<Propriedade?> infos(int id) {
+    return db.getFazendaInfo(id);
+  }
+
+  void savePropriedade(Propriedade prop) {
+    db.updateFazenda(prop);
+  }
 }

@@ -1,5 +1,11 @@
 import 'package:get/get.dart';
 
-class MenuController extends GetxController{
-  
+import '../../providers/database_user.dart';
+
+class MenuController extends GetxController {
+  final db = DataBaseProvider();
+
+  void deslogando() {
+    db.deslogar();
+  }
 }

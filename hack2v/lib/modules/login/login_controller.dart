@@ -35,6 +35,7 @@ class LoginController extends GetxController {
       Future.delayed(const Duration(milliseconds: 1), () {
         Get.offAllNamed('/menu');
       });
+      db.deslogar();
       await db.updateUserLoggedInStatus(isLoggedIn, usuario);
       return "ok";
     }

@@ -162,7 +162,7 @@ class DataBaseProvider {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
       Propriedade.tabelaPropriedade,
-      where: '$idColumn = ?',
+      where: '${Propriedade.idusuarioColumn} = ?',
       whereArgs: [idUsuario],
     );
     return List.generate(maps.length, (index) {
@@ -207,5 +207,37 @@ class DataBaseProvider {
       where: "$idColumn = ?",
       whereArgs: [usuario.id],
     );
+  }
+
+  Future<void> deslogar() async {
+    final db = await database;
+    const newValue = false;
+
+    await db.update(
+      tabelaUsuario,
+      {'loginColumn': newValue},
+      where: 'loginColumn = ?',
+      whereArgs: [true],
+    );
+  }
+
+  Future<Propriedade?> getFazendaInfo(int propid) async {
+    final db = await database;
+    List<Map> maps = await db.query(Propriedade.tabelaPropriedade,
+        columns: [
+          Propriedade.idColumn,
+          Propriedade.nomePropriedadeColumn,
+          Propriedade.hectarColumn,
+          Propriedade.dataColumn,
+          Propriedade.idusuarioColumn,
+          Propriedade.tipoColumn
+        ],
+        where: "$propid = ?",
+        whereArgs: [Propriedade.idColumn]);
+    if (maps.isNotEmpty) {
+      return Propriedade.fromMap(maps.first);
+    } else {
+      return null;
+    }
   }
 }

@@ -7,12 +7,12 @@ class Propriedade {
   static const String tipoColumn = "tipoColumn";
   static const String idusuarioColumn = "idusuarioColumn";
 
-  final int id;
-  final String nomePropriedade;
-  final double hectar;
-  final String data;
-  final String tipo;
-  final int idUsuario;
+  late final int id;
+  late final String nomePropriedade;
+  late final double hectar;
+  late final String data;
+  late final String tipo;
+  late final int idUsuario;
 
   Propriedade(
       {required this.id,
@@ -21,6 +21,15 @@ class Propriedade {
       required this.data,
       required this.tipo,
       required this.idUsuario});
+
+  Propriedade.fromMap(Map map) {
+    id = map[idColumn];
+    nomePropriedade = map[nomePropriedadeColumn];
+    data = map[dataColumn];
+    hectar = map[hectarColumn];
+    tipo = map[tipoColumn];
+    idUsuario = map[idusuarioColumn];
+  }
 
   Map<String, dynamic> toMap() {
     return {

@@ -41,7 +41,13 @@ class PropInfoState extends StatefulWidget {
 
 class _PropInfo extends State<PropInfoState> {
   PropInfoController _controller = PropInfoController();
-  String selectvalue = '';
+  int selectvalue = 0;
+  Propriedade? propriedade;
+  bool propriedadeSelecionada = false;
+  TextEditingController _hectarController = TextEditingController();
+  TextEditingController _dataController = TextEditingController();
+  TextEditingController _tipoController = TextEditingController();
+  String selectvalue2 = '';
   @override
   Widget build(BuildContext context) {
     bool isEditing = false;
@@ -149,9 +155,10 @@ class _PropInfo extends State<PropInfoState> {
                         child: TextButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text(
-                                'Nome da Propiedade',
+                                propriedade?.nomePropriedade ??
+                                    'Nome da Propriedade',
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 17,
@@ -200,10 +207,14 @@ class _PropInfo extends State<PropInfoState> {
                         absorbing: !_controller.isEditing.value,
                         child: IgnorePointer(
                           ignoring: !_controller.isEditing.value,
-                          child: TextField(
+                          child: TextFormField(
+                            controller: _hectarController,
                             decoration: InputDecoration(
+                                labelText: propriedade?.hectar.toString() ??
+                                    'Tamanho do Hectar',
                                 border: InputBorder.none,
-                                hintText: 'Tamanho do Hectar',
+                                hintText: propriedade?.hectar.toString() ??
+                                    'Tamanho do Hectar',
                                 hintStyle: TextStyle(color: Colors.grey[400])),
                           ),
                         ),
@@ -232,19 +243,29 @@ class _PropInfo extends State<PropInfoState> {
                               bottom: BorderSide(
                         color: Color.fromRGBO(200, 200, 200, 1),
                       ))),
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(8),
-                          MaskTextInputFormatter(
-                              mask: '##/##/####',
-                              filter: {"#": RegExp(r'[0-9]')})
-                        ],
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Data do Plantio',
-                            hintStyle: TextStyle(color: Colors.grey[400])),
+                      child: AbsorbPointer(
+                        absorbing: !_controller.isEditing.value,
+                        child: IgnorePointer(
+                          ignoring: !_controller.isEditing.value,
+                          child: TextFormField(
+                            controller: _dataController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(8),
+                              MaskTextInputFormatter(
+                                  mask: '##/##/####',
+                                  filter: {"#": RegExp(r'[0-9]')})
+                            ],
+                            decoration: InputDecoration(
+                                labelText:
+                                    propriedade?.data ?? 'Data do Plantio',
+                                border: InputBorder.none,
+                                hintText:
+                                    propriedade?.data ?? 'Data do Plantio',
+                                hintStyle: TextStyle(color: Colors.grey[400])),
+                          ),
+                        ),
                       ),
                     ),
                   ]),
@@ -264,7 +285,8 @@ class _PropInfo extends State<PropInfoState> {
                   child: Column(children: [
                     Container(
                       margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(0),
+                      width: 350,
                       decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
@@ -272,11 +294,30 @@ class _PropInfo extends State<PropInfoState> {
                           ),
                         ),
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Tipo do Plantio',
-                            hintStyle: TextStyle(color: Colors.grey[400])),
+                      child: TextButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              propriedade?.tipo ?? 'Tipo de Plantio',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                            const Icon(
+                              Ionicons.chevron_down_outline,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          openDialog2();
+                        },
+                        style: const ButtonStyle(
+                          alignment:
+                              Alignment.centerLeft, // Alinhamento à esquerda
+                        ),
                       ),
                     ),
                   ]),
@@ -291,13 +332,29 @@ class _PropInfo extends State<PropInfoState> {
                         Color.fromRGBO(114, 219, 233, 1),
                         Color.fromRGBO(37, 130, 173, 0.945)
                       ])),
-                  child: const Center(
-                    child: Text('Salvar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 37,
-                        )),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        saveChanges();
+                      });
+                    },
+                    child: const Text(
+                      'Salvar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 37,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue, // Cor do botão
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15), // Espaçamento interno vertical
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(10), // Borda arredondada
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -340,7 +397,8 @@ class _PropInfo extends State<PropInfoState> {
                             activeColor: Colors.black,
                             onChanged: (value) {
                               setState(() {
-                                selectvalue = value as String;
+                                selectvalue = value!;
+                                propriedadeSelecionada = true;
                               });
                             },
                           );
@@ -360,7 +418,14 @@ class _PropInfo extends State<PropInfoState> {
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: submit,
+                  onPressed: () {
+                    if (propriedadeSelecionada) {
+                      submit(properties
+                          .firstWhere((prop) => prop.id == selectvalue));
+                    } else {
+                      // Exiba um diálogo de erro ou uma mensagem informando que a seleção é obrigatória.
+                    }
+                  },
                 ),
               ],
             );
@@ -370,8 +435,127 @@ class _PropInfo extends State<PropInfoState> {
     );
   }
 
-  void submit() {
-    //_controller.tipoController = selectvalue;
+  void submit(Propriedade propriedadeSelecionada) {
+    setState(() {
+      propriedade = propriedadeSelecionada;
+    });
+    Get.back();
+  }
+
+  void saveChanges() {
+    if (propriedade != null) {
+      Propriedade newprop = Propriedade(
+          id: propriedade!.id,
+          nomePropriedade: propriedade!.nomePropriedade,
+          hectar: double.parse(valorHectar()),
+          data: valorData(),
+          tipo: valorTipo(),
+          idUsuario: propriedade!.idUsuario);
+
+      // Chamar o método de salvamento no controlador ou serviço correspondente
+      _controller.savePropriedade(newprop);
+    }
+  }
+
+  String valorHectar() {
+    String valor = _hectarController.text;
+    return valor;
+  }
+
+  String valorData() {
+    String valor = _dataController.text;
+    return valor;
+  }
+
+  String valorTipo() {
+    String valor = _tipoController.text;
+    return valor;
+  }
+
+  Future openDialog2() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text('Selecione um plantio'),
+              content: Container(
+                height: 225,
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Arroz'),
+                      value: 'Arroz',
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue2 = value as String;
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Trigo'),
+                      value: 'Trigo',
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue2 = value as String;
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Algodão'),
+                      value: 'Algodão',
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue2 = value as String;
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      autofocus: true,
+                      title: const Text('Soja'),
+                      value: 'Soja',
+                      groupValue: selectvalue,
+                      activeColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          selectvalue2 = value as String;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text(
+                    'Ok',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onPressed: submit2,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void submit2() {
     Get.back();
   }
 }
