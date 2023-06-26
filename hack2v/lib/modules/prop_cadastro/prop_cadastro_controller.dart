@@ -30,6 +30,7 @@ class PropCadastroController extends GetxController {
       idUsuario: int.parse((await db.getUserId()).toString()),
     );
     await db.insertFazenda(prop);
+    Get.toNamed('/menu');
 
     return "ok";
   }
