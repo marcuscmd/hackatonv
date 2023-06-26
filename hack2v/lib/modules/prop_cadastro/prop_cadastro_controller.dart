@@ -10,7 +10,7 @@ class PropCadastroController extends GetxController {
   var nomePropController = TextEditingController(text: '');
   var hectarController = TextEditingController(text: '');
   var dataController = TextEditingController(text: '');
-  var tipoController = 'Selecione um Plantio';
+  var tipoController = 'Tipo do Plantio';
 
   final db = DataBaseProvider();
 

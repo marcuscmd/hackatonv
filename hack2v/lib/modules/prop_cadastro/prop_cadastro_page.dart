@@ -49,6 +49,12 @@ class _PropCadastroState extends State<PropCadastroState> {
 
   var mask = MaskTextInputFormatter(mask: "##/##/####");
 
+  load() {
+    setState(() {
+      _controller.tipoController = selectvalue;
+    });
+  }
+
   Future<void> _data(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -321,7 +327,7 @@ class _PropCadastroState extends State<PropCadastroState> {
                           ],
                         ),
                         onPressed: () {
-                          openDialog();
+                          openDialog();                         
                         },
                         style: const ButtonStyle(
                           alignment:
@@ -452,7 +458,7 @@ class _PropCadastroState extends State<PropCadastroState> {
   }
 
   void submit() {
-    _controller.tipoController = selectvalue;
+    load();
     Get.back();
   }
 }
