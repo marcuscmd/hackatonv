@@ -10,6 +10,7 @@ const String emailColumn = "emailColumn";
 const String dataNascColumn = "dataNascColumn";
 const String usuarioColumn = "usuarioColumn";
 const String senhaColumn = "senhaColumn";
+const String loginColumn = "loginColumn";
 
 class Usuario {
   late int id;
@@ -18,6 +19,7 @@ class Usuario {
   late String usuario;
   late String email;
   late String senha;
+  late bool login = false;
 
   Usuario(this.nome, this.dataNasc, this.usuario, this.email, this.senha);
 
@@ -28,6 +30,7 @@ class Usuario {
     usuario = map[usuarioColumn];
     email = map[emailColumn];
     senha = map[senhaColumn];
+    login = map[loginColumn] == true ? true : false;
   }
 
   Map<String, dynamic> toMap() {
@@ -53,7 +56,7 @@ class DataBaseProvider {
     String path = p.join(databasesPath, databaseName);
     database = openDatabase(
       path,
-      version: 2, // Incrementa a versão do banco de dados
+      version: 3, // Incrementa a versão do banco de dados
       onCreate: (db, version) {
         return _criarTabelas(db);
       },
@@ -72,7 +75,8 @@ class DataBaseProvider {
         "$emailColumn TEXT,"
         "$dataNascColumn TEXT,"
         "$usuarioColumn TEXT,"
-        "$senhaColumn TEXT)");
+        "$senhaColumn TEXT,"
+        "$loginColumn BOOLEAN)");
   }
 
   void _createPropriedadeTable(Database db) {
@@ -115,7 +119,8 @@ class DataBaseProvider {
           emailColumn,
           dataNascColumn,
           usuarioColumn,
-          senhaColumn
+          senhaColumn,
+          loginColumn
         ],
         where: "$emailColumn = ?",
         whereArgs: [usuario]);
@@ -162,12 +167,12 @@ class DataBaseProvider {
     );
     return List.generate(maps.length, (index) {
       return Propriedade(
-        id: maps[index]['id'],
-        nomePropriedade: maps[index]['nomePropriedade'],
-        hectar: maps[index]['hectare'],
-        data: maps[index]['data'],
-        tipo: maps[index]['tipo'],
-        idUsuario: maps[index]['idUsuario'],
+        id: maps[index][Propriedade.idColumn],
+        nomePropriedade: maps[index][Propriedade.nomePropriedadeColumn],
+        hectar: maps[index][Propriedade.hectarColumn],
+        data: maps[index][Propriedade.dataColumn],
+        tipo: maps[index][Propriedade.tipoColumn],
+        idUsuario: maps[index][Propriedade.idusuarioColumn],
       );
     });
   }
@@ -175,5 +180,32 @@ class DataBaseProvider {
   void _atualizarTabelas(Database db) {
     // Adicione aqui a lógica para atualizar as tabelas existentes, se necessário
     _criarTabelas(db);
+  }
+
+  Future<int?> getUserId() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(tabelaUsuario,
+        columns: [idColumn], where: '$loginColumn = ?', whereArgs: [true]);
+    if (maps.isNotEmpty) {
+      // O usuário está autenticado, então você pode obter o ID
+      final userId = maps.first[idColumn];
+      return userId;
+    } else {
+      // O usuário não está autenticado
+      return null;
+    }
+  }
+
+  Future<void> updateUserLoggedInStatus(
+      bool isLoggedIn, Usuario usuario) async {
+    final newValue = isLoggedIn ? true : false;
+    final db = await database;
+
+    await db.update(
+      tabelaUsuario,
+      {'loginColumn': newValue},
+      where: "$idColumn = ?",
+      whereArgs: [usuario.id],
+    );
   }
 }

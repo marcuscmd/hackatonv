@@ -22,12 +22,13 @@ class PropCadastroController extends GetxController {
 
   Future<String> cadastro() async {
     var prop = Propriedade(
-        id: 0,
-        nomePropriedade: nomePropController.text,
-        hectar: double.parse(hectarController.text),
-        data: dataController.text,
-        tipo: tipoController,
-        idUsuario: cd.userId.toInt());
+      id: 0,
+      nomePropriedade: nomePropController.text,
+      hectar: double.parse(hectarController.text),
+      data: dataController.text,
+      tipo: tipoController,
+      idUsuario: int.parse((await db.getUserId()).toString()),
+    );
     await db.insertFazenda(prop);
 
     return "ok";

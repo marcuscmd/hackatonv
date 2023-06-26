@@ -10,7 +10,6 @@ class LoginController extends GetxController {
 
   var emailController = TextEditingController(text: '');
   var passwordController = TextEditingController(text: '');
-  var userId = 0.obs;
   final db = DataBaseProvider();
   List<Usuario> usuarios = [];
 
@@ -25,18 +24,18 @@ class LoginController extends GetxController {
   }
 
   Future<String> goTologin() async {
-    var usuario =
-        await db.getUsuario(emailController.text, passwordController.text);
+    var usuario = await db.getUsuario(
+        emailController.text,
+        passwordController
+            .text); // Armazena o ID do usuário atual na variável userId
 
-    if (usuario != null) {
-      userId.value =
-          usuario.id; // Armazena o ID do usuário atual na variável userId
-    }
-
+    bool isLoggedIn = true;
+    //if (usuario != null) await db.updateUserLoggedInStatus(isLoggedIn, usuario);
     if (usuario != null) {
       Future.delayed(const Duration(milliseconds: 1), () {
         Get.offAllNamed('/menu');
       });
+      await db.updateUserLoggedInStatus(isLoggedIn, usuario);
       return "ok";
     }
 

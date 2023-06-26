@@ -1,16 +1,50 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hack2v/modules/prop_info/prop_info_controller.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'dart:ui' as ui;
+
+import '../../providers/database_prop.dart';
 
 class PropInfoPage extends GetView<PropInfoController> {
   const PropInfoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Directionality(
+        textDirection: ui.TextDirection.ltr,
+        child: PropInfoState(
+          title: '',
+        ),
+      ),
+    );
+  }
+}
+
+class PropInfoState extends StatefulWidget {
+  const PropInfoState({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _PropInfo createState() => _PropInfo();
+}
+
+class _PropInfo extends State<PropInfoState> {
+  PropInfoController _controller = PropInfoController();
+  String selectvalue = '';
+  @override
+  Widget build(BuildContext context) {
+    bool isEditing = false;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -47,7 +81,12 @@ class PropInfoPage extends GetView<PropInfoController> {
                           const EdgeInsets.only(top: 0, right: 10, bottom: 5),
                       margin: const EdgeInsets.only(top: 0, right: 20),
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              _controller
+                                  .toggleEditing(); // Inverte o estado de edição ao clicar no ícone da caneta
+                            });
+                          },
                           icon: const Icon(
                             Icons.border_color_outlined,
                             size: 35,
@@ -125,7 +164,7 @@ class PropInfoPage extends GetView<PropInfoController> {
                             ],
                           ),
                           onPressed: () {
-                            //openDialog();
+                            openDialog();
                           },
                           style: const ButtonStyle(
                             alignment:
@@ -157,11 +196,17 @@ class PropInfoPage extends GetView<PropInfoController> {
                               bottom: BorderSide(
                         color: Color.fromRGBO(200, 200, 200, 1),
                       ))),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Tamanho do Hectar',
-                            hintStyle: TextStyle(color: Colors.grey[400])),
+                      child: AbsorbPointer(
+                        absorbing: !_controller.isEditing.value,
+                        child: IgnorePointer(
+                          ignoring: !_controller.isEditing.value,
+                          child: TextField(
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Tamanho do Hectar',
+                                hintStyle: TextStyle(color: Colors.grey[400])),
+                          ),
+                        ),
                       ),
                     ),
                   ]),
@@ -262,5 +307,71 @@ class PropInfoPage extends GetView<PropInfoController> {
         ]),
       ),
     );
+  }
+
+  Future openDialog() async {
+    List<Propriedade> properties = await _controller.props();
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: const Text('Selecione uma propriedade'),
+              // ignore: sized_box_for_whitespace
+              content: Container(
+                height: 225,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 150,
+                      width: 150,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: properties.length,
+                        itemBuilder: (context, index) {
+                          return RadioListTile(
+                            autofocus: true,
+                            title: Text(properties[index].nomePropriedade),
+                            value: properties[index].id,
+                            groupValue: selectvalue,
+                            activeColor: Colors.black,
+                            onChanged: (value) {
+                              setState(() {
+                                selectvalue = value as String;
+                              });
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  // ignore: sort_child_properties_last
+                  child: const Text(
+                    'Ok',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onPressed: submit,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void submit() {
+    //_controller.tipoController = selectvalue;
+    Get.back();
   }
 }
