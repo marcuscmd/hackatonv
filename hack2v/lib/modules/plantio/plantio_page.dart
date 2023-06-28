@@ -328,16 +328,24 @@ class _PlantioState extends State<PlantioState> {
           fontSize: 17,
         ),
       );
+    } else if (propriedade?.tipo == 'Arroz') {
+      return const Text(
+        'O arroz pode ser plantado por meio de sementes diretamente no solo ou através de mudas pré-germinadas. '
+        'O método de plantio depende da variedade e das práticas de cultivo específicas da região. '
+        'Siga as recomendações da variedade escolhida para o espaçamento e a profundidade de plantio corretos. '
+        'O arroz é uma cultura que se desenvolve melhor em regiões com clima quente e úmido. '
+        'A temperatura ideal para o crescimento do arroz está na faixa de 20°C a 35°C durante o dia. '
+        'Certifique-se de escolher uma região com um clima adequado para o cultivo do arroz. '
+        'O arroz prefere solos alagados e com boa capacidade de retenção de água. O pH ideal do solo para o cultivo do arroz está na faixa de 6 a 7. '
+        'Realize uma análise do solo para determinar a fertilidade e as necessidades de correção, como adição de nutrientes ou ajuste de pH.',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 17,
+        ),
+      );
     }
     return const Text(
-      'O arroz pode ser plantado por meio de sementes diretamente no solo ou através de mudas pré-germinadas. '
-      'O método de plantio depende da variedade e das práticas de cultivo específicas da região. '
-      'Siga as recomendações da variedade escolhida para o espaçamento e a profundidade de plantio corretos. '
-      'O arroz é uma cultura que se desenvolve melhor em regiões com clima quente e úmido. '
-      'A temperatura ideal para o crescimento do arroz está na faixa de 20°C a 35°C durante o dia. '
-      'Certifique-se de escolher uma região com um clima adequado para o cultivo do arroz. '
-      'O arroz prefere solos alagados e com boa capacidade de retenção de água. O pH ideal do solo para o cultivo do arroz está na faixa de 6 a 7. '
-      'Realize uma análise do solo para determinar a fertilidade e as necessidades de correção, como adição de nutrientes ou ajuste de pH.',
+      '',
       style: TextStyle(
         color: Colors.black,
         fontSize: 17,

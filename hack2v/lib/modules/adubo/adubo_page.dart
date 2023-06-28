@@ -310,13 +310,13 @@ class _AduboState extends State<AduboState> {
       );
     } else if (propriedade?.tipo == 'Soja') {
       return const Text(
-        'Fósforo (P): O fósforo desempenha um papel importante no desenvolvimento das raízes, na floração e na formação de vagens da soja. '
+        'Fósforo (P). O fósforo desempenha um papel importante no desenvolvimento das raízes, na floração e na formação de vagens da soja. '
         'Os fertilizantes fosfatados, como superfosfato simples ou fosfato diamônio, podem ser utilizados para fornecer fósforo ao solo, '
         'especialmente se houver deficiência detectada por meio de análise de solo. '
-        'Potássio (K): O potássio é essencial para o desenvolvimento da soja, especialmente para a formação de vagens e grãos. '
+        'Potássio (K). O potássio é essencial para o desenvolvimento da soja, especialmente para a formação de vagens e grãos. '
         'Fertilizantes potássicos, como cloreto de potássio ou sulfato de potássio, podem ser aplicados para suprir as necessidades de potássio do solo, '
         'se houver deficiência detectada por meio de análise de solo. '
-        'Cálcio (Ca) e Magnésio (Mg): Esses nutrientes são importantes para o desenvolvimento geral da planta de soja. '
+        'Cálcio (Ca) e Magnésio (Mg). Esses nutrientes são importantes para o desenvolvimento geral da planta de soja. '
         'O cálcio contribui para a estrutura das células e a formação adequada de raízes, enquanto o magnésio é necessário para a fotossíntese. '
         'Podem ser fornecidos por meio de fertilizantes como o calcário (fonte de cálcio) e o sulfato de magnésio.',
         style: TextStyle(
@@ -324,14 +324,22 @@ class _AduboState extends State<AduboState> {
           fontSize: 17,
         ),
       );
+    } else if (propriedade?.tipo == 'Arroz') {
+      return const Text(
+        'Cálcio (Ca) e Magnésio (Mg). Esses nutrientes são importantes para o desenvolvimento da estrutura das células e para a atividade enzimática na soja. '
+        'O calcário (carbonato de cálcio) é frequentemente utilizado para corrigir a acidez do solo e fornecer cálcio. '
+        'O sulfato de magnésio é uma opção comum para suprir a demanda de magnésio. \n'
+        'Potássio (K). O potássio é essencial para o crescimento e desenvolvimento geral da planta de soja. '
+        'Ele desempenha um papel importante na resistência a doenças e estresses, na formação de grãos e no teor de óleo. '
+        'Fertilizantes potássicos, como o cloreto de potássio ou o sulfato de potássio, são amplamente utilizados para suprir as necessidades de potássio da soja.',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 17,
+        ),
+      );
     }
     return const Text(
-      'Cálcio (Ca) e Magnésio (Mg): Esses nutrientes são importantes para o desenvolvimento da estrutura das células e para a atividade enzimática na soja. '
-      'O calcário (carbonato de cálcio) é frequentemente utilizado para corrigir a acidez do solo e fornecer cálcio. '
-      'O sulfato de magnésio é uma opção comum para suprir a demanda de magnésio. '
-      'Potássio (K): O potássio é essencial para o crescimento e desenvolvimento geral da planta de soja. '
-      'Ele desempenha um papel importante na resistência a doenças e estresses, na formação de grãos e no teor de óleo. '
-      'Fertilizantes potássicos, como o cloreto de potássio ou o sulfato de potássio, são amplamente utilizados para suprir as necessidades de potássio da soja.',
+      '',
       style: TextStyle(
         color: Colors.black,
         fontSize: 17,
