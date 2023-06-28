@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hack2v/providers/database_prop.dart';
 import 'package:intl/intl.dart';
@@ -31,8 +33,21 @@ class PropCadastroController extends GetxController {
       idUsuario: int.parse((await db.getUserId()).toString()),
     );
     await db.insertFazenda(prop);
+    toast("Cadastrado com Sucesso!");
     Get.toNamed('/menu');
 
     return "ok";
+  }
+
+  Future<bool?> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 4,
+        backgroundColor: const Color.fromARGB(255, 192, 123, 123),
+        textColor: Colors.white,
+        fontSize: 15.0);
   }
 }

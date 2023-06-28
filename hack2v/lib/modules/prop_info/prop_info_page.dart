@@ -52,8 +52,7 @@ class _PropInfo extends State<PropInfoState> {
           height: 250,
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/backgroud.png'),
-                  fit: BoxFit.fill)),
+                  image: AssetImage('assets/backgroud.png'), fit: BoxFit.fill)),
           child: Stack(children: [
             Center(
               child: Container(
@@ -81,9 +80,14 @@ class _PropInfo extends State<PropInfoState> {
                     margin: const EdgeInsets.only(top: 0, right: 20),
                     child: IconButton(
                         onPressed: () {
+                          if (_controller.isEditing.isTrue ||
+                              _controller.isEditingData.isTrue) {
+                            _controller.toast('Modo Edição Desativado!');
+                          } else
+                            _controller.toast('Modo Edição Ativado!');
                           setState(() {
-                            _controller
-                                .toggleEditing(); // Inverte o estado de edição ao clicar no ícone da caneta
+                            _controller.toggleEditing();
+                            // Inverte o estado de edição ao clicar no ícone da caneta
                           });
                         },
                         icon: const Icon(
@@ -322,17 +326,15 @@ class _PropInfo extends State<PropInfoState> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(310, 100),
-                      backgroundColor:
-                          const Color.fromARGB(82, 114, 219, 233),
+                      backgroundColor: const Color.fromARGB(82, 114, 219, 233),
                     ),
                     onPressed: () {
                       setState(() {
-                        if(saveChanges()) {
+                        if (saveChanges()) {
                           Get.toNamed('/menu');
-                        }
-                        else{
+                        } else {
                           //mensagem erro
-                        }  
+                        }
                       });
                     },
                     child: const Text('Salvar',
@@ -432,16 +434,16 @@ class _PropInfo extends State<PropInfoState> {
   bool saveChanges() {
     try {
       if (propriedade != null) {
-      Propriedade newprop = Propriedade(
-          id: propriedade!.id,
-          nomePropriedade: propriedade!.nomePropriedade,
-          hectar: double.parse(valorHectar()),
-          data: valorData(),
-          tipo: propriedade!.tipo,
-          idUsuario: propriedade!.idUsuario);
+        Propriedade newprop = Propriedade(
+            id: propriedade!.id,
+            nomePropriedade: propriedade!.nomePropriedade,
+            hectar: double.parse(valorHectar()),
+            data: valorData(),
+            tipo: propriedade!.tipo,
+            idUsuario: propriedade!.idUsuario);
 
-          // Chamar o método de salvamento no controlador ou serviço correspondente
-          _controller.savePropriedade(newprop);
+        // Chamar o método de salvamento no controlador ou serviço correspondente
+        _controller.savePropriedade(newprop);
       }
       return true;
     } catch (e) {

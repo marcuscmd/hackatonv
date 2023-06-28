@@ -163,7 +163,7 @@ class _PlantioState extends State<PlantioState> {
                       child: TextField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: propriedade?.tipo,
+                            hintText: propriedade?.tipo ?? 'Tipo de Plantio',
                             enabled: false,
                             hintStyle: TextStyle(color: Colors.grey[400])),
                       ),
@@ -214,8 +214,8 @@ class _PlantioState extends State<PlantioState> {
     // ignore: use_build_context_synchronously
     final size = MediaQuery.of(context).size;
 
-  // ignore: use_build_context_synchronously
-  await showDialog(
+    // ignore: use_build_context_synchronously
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(

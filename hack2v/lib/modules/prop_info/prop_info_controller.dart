@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import '../../providers/database_prop.dart';
@@ -18,7 +20,7 @@ class PropInfoController extends GetxController {
   RxBool isEditingData = false.obs;
   void toggleEditing() {
     isEditing.value = !isEditing.value; // Inverte o estado de edição
-    isEditingData.value  = !isEditingData.value;
+    isEditingData.value = !isEditingData.value;
   }
 
   Future<List<Propriedade>> props() async {
@@ -34,6 +36,17 @@ class PropInfoController extends GetxController {
 
   void savePropriedade(Propriedade prop) {
     db.updateFazenda(prop);
-    
+  }
+
+  Future<bool?> toast(String message) {
+    Fluttertoast.cancel();
+    return Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 4,
+        backgroundColor: const Color.fromARGB(255, 192, 123, 123),
+        textColor: Colors.white,
+        fontSize: 15.0);
   }
 }

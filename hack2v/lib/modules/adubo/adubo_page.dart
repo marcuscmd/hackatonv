@@ -6,7 +6,6 @@ import 'dart:ui' as ui;
 import '../../providers/database_prop.dart';
 import '../prop_info/prop_info_controller.dart';
 
-
 class AduboPage extends GetView<AduboController> {
   const AduboPage({super.key});
 
@@ -123,8 +122,7 @@ class _AduboState extends State<AduboState> {
                                   fontSize: 17,
                                 ),
                               ),
-                              const 
-                              Icon(
+                              const Icon(
                                 Ionicons.chevron_down_outline,
                                 color: Colors.grey,
                               ),
@@ -141,6 +139,37 @@ class _AduboState extends State<AduboState> {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 15),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Color.fromRGBO(19, 149, 167, 0.3),
+                            blurRadius: 20.0,
+                            offset: Offset(0, 10))
+                      ]),
+                  child: Column(children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                        color: Color.fromRGBO(200, 200, 200, 1),
+                      ))),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: propriedade?.tipo ?? 'Tipo de Plantio',
+                            enabled: false,
+                            hintStyle: TextStyle(color: Colors.grey[400])),
+                      ),
+                    ),
+                  ]),
                 ),
                 const SizedBox(height: 50),
                 Container(
@@ -167,9 +196,7 @@ class _AduboState extends State<AduboState> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListView(
-                    children: [
-                      texto()
-                    ],
+                    children: [texto()],
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -181,8 +208,7 @@ class _AduboState extends State<AduboState> {
     );
   }
 
-
-   Future openDialog() async {
+  Future openDialog() async {
     List<Propriedade> properties = await _controller.props();
     // ignore: use_build_context_synchronously
     final size = MediaQuery.of(context).size;
@@ -258,7 +284,7 @@ class _AduboState extends State<AduboState> {
     );
   }
 
-    Widget texto() {
+  Widget texto() {
     if (propriedade?.tipo == 'Trigo') {
       return const Text(
         'Nitrogênio (N). O nitrogênio é um nutriente essencial para o crescimento e desenvolvimento do trigo. '
@@ -313,8 +339,7 @@ class _AduboState extends State<AduboState> {
     );
   }
 
-
-    void submit(Propriedade propriedadeSelecionada) {
+  void submit(Propriedade propriedadeSelecionada) {
     setState(() {
       propriedade = propriedadeSelecionada;
     });
