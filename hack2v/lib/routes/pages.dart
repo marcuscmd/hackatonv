@@ -46,12 +46,12 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.plantio,
-      page: () => const PlantioPage(),
+      page: () => PlantioPage(),
       binding: PlantioBinding(),
     ),
     GetPage(
       name: Routes.adubo,
-      page: () => const AduboPage(),
+      page: () => AduboPage(),
       binding: AduboBinding(),
     ),
     GetPage(

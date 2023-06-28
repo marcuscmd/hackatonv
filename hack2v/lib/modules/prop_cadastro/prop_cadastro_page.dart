@@ -5,18 +5,11 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:hack2v/modules/prop_cadastro/prop_cadastro_controller.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
-// import 'package:flutter/services.dart';
-// import 'package:intl/intl.dart';
-// import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
 import '../../core/app_theme.dart';
 
-// import '../models/appCafe_dao.dart';
-// import 'cadastro_prop.dart';
-
-var newFormat = DateFormat("dd/MM/y");
+var newFormat = DateFormat("dd/MM/yyyy");
 var dt = DateTime.now();
 String updatedDt = newFormat.format(dt);
 String data = DateTime.now().toIso8601String();
@@ -80,8 +73,8 @@ class _PropCadastroState extends State<PropCadastroState> {
       setState(() {
         dt = picked;
         data = dt.toIso8601String();
-        _controller.dataController.text = data;
         updatedDt = newFormat.format(picked);
+        _controller.dataController.text = updatedDt;
       });
     }
   }
@@ -327,7 +320,7 @@ class _PropCadastroState extends State<PropCadastroState> {
                           ],
                         ),
                         onPressed: () {
-                          openDialog();                         
+                          openDialog();
                         },
                         style: const ButtonStyle(
                           alignment:
@@ -337,21 +330,21 @@ class _PropCadastroState extends State<PropCadastroState> {
                     ),
                   ]),
                 ),
-                const SizedBox(height: 15),
-                const SizedBox(height: 30),
+                const SizedBox(height: 45),
                 Container(
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       gradient: const LinearGradient(colors: [
                         Color.fromRGBO(114, 219, 233, 1),
-                        Color.fromRGBO(37, 130, 173, 0.945)
+                        Color.fromRGBO(37, 130, 173, 0.945),
                       ])),
                   child: Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(310, 100),
-                        backgroundColor: Color.fromARGB(82, 114, 219, 233),
+                        backgroundColor:
+                            const Color.fromARGB(82, 114, 219, 233),
                       ),
                       onPressed: () {
                         _controller.cadastro();

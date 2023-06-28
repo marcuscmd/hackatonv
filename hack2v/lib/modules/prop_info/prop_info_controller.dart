@@ -15,8 +15,10 @@ class PropInfoController extends GetxController {
 
   LoginController cd = LoginController();
   RxBool isEditing = false.obs;
+  RxBool isEditingData = false.obs;
   void toggleEditing() {
     isEditing.value = !isEditing.value; // Inverte o estado de edição
+    isEditingData.value  = !isEditingData.value;
   }
 
   Future<List<Propriedade>> props() async {
@@ -32,5 +34,6 @@ class PropInfoController extends GetxController {
 
   void savePropriedade(Propriedade prop) {
     db.updateFazenda(prop);
+    
   }
 }

@@ -4,6 +4,7 @@ import 'package:hack2v/routes/pages.dart';
 import 'package:hack2v/routes/routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+
 void main() async {
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
@@ -20,4 +21,5 @@ void main() async {
       Locale('pt', 'BR'),
     ],
   ));
+
 }
