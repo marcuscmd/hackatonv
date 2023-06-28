@@ -53,13 +53,13 @@ class _LoginRegistro extends State<CadastroState>
       cancelText: "CANCELAR",
       builder: (context, child) => Theme(
         data: ThemeData.light().copyWith(
-          primaryColor: Colors.redAccent,
+          primaryColor: const Color.fromARGB(255, 130, 247, 247),
           buttonTheme:
               const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           colorScheme: const ColorScheme.light(
-            primary: Colors.redAccent,
+            primary: Color.fromARGB(255, 100, 191, 233),
           ).copyWith(
-            secondary: Colors.redAccent,
+            secondary: const Color.fromARGB(255, 100, 191, 233),
           ),
         ),
         child: child!,
@@ -309,13 +309,29 @@ class _LoginRegistro extends State<CadastroState>
                               ),
                             ),
                           ),
-                          child: TextField(
-                            controller: controller.passwordController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Senha',
-                              hintStyle: TextStyle(
-                                color: Colors.grey[400],
+                          child: Obx(
+                            () => TextFormField(
+                              controller: controller.passwordController,
+                              obscureText: controller.showPassword.value,
+                              cursorColor: Colors.grey[400],
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Senha',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                suffixIcon: GestureDetector(
+                                  child: Icon(
+                                    controller.showPassword.value == false
+                                        ? Icons.visibility_rounded
+                                        : Icons.visibility_off,
+                                    color: Colors.black54,
+                                  ),
+                                  onTap: () {
+                                    controller.toggleShowPassword();
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -345,9 +361,10 @@ class _LoginRegistro extends State<CadastroState>
                               behavior: SnackBarBehavior.floating,
                               backgroundColor: Colors.transparent,
                               content: AwesomeSnackbarContent(
-                                title: 'Erro ao Cadastrar!',
+                                title: 'Erro ao registrar!',
                                 message: result.toString(),
                                 contentType: ContentType.failure,
+                                color: const Color.fromARGB(255, 32, 82, 77),
                               ),
                             );
                             // ignore: use_build_context_synchronously
@@ -355,6 +372,7 @@ class _LoginRegistro extends State<CadastroState>
                               ..hideCurrentSnackBar()
                               ..showSnackBar(snackBar);
                           } else {
+                            controller.toast('Registrado com Sucesso!');
                             Get.toNamed('/login');
                           }
                         },

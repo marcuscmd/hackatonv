@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:i18n_extension/default.i18n.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../core/app_theme.dart';
@@ -12,6 +14,8 @@ import '../../providers/database_user.dart';
 import '../components/clima_item.dart';
 import 'constantes.dart';
 import 'dart:ui' as ui;
+
+
 
 class MenuPageV extends GetView<MenuController> {
   const MenuPageV({super.key});
@@ -21,9 +25,12 @@ class MenuPageV extends GetView<MenuController> {
     return MaterialApp(
       theme: themeData,
       debugShowCheckedModeBanner: false,
-      home: const Directionality(
-        textDirection: ui.TextDirection.ltr,
-        child: MenuPage(),
+      home: I18n(
+        initialLocale: const Locale("pt", "BR"),
+        child: const Directionality(
+          textDirection: ui.TextDirection.ltr,
+          child: MenuPage(),
+        ),
       ),
     );
   }
@@ -84,13 +91,13 @@ class _MenuPage extends State<MenuPage> {
 
         var parsedDate =
             DateTime.parse(locationData["localtime"].substring(0, 10));
-        var newDate = DateFormat('MMMMEEEEd').format(parsedDate);
+        var newDate = DateFormat('MMMMEEEEd', 'pt-BR').format(parsedDate);
         currentDate = newDate;
 
         //updateWeather
         currentWeatherStatus = currentWeather["condition"]["text"];
         weatherIcon =
-            currentWeatherStatus.replaceAll(' ', '').toLowerCase() + ".png";
+            "${currentWeatherStatus.replaceAll(' ', '').toLowerCase()}.png";
         temperature = currentWeather["temp_c"].toInt();
         windSpeed = currentWeather["wind_kph"].toInt();
         humidity = currentWeather["humidity"].toInt();
@@ -296,15 +303,15 @@ class _MenuPage extends State<MenuPage> {
                           ),
                         ],
                       ),
+                      // Text(
+                      //   //currentWeatherStatus.i18n,
+                      //   style: const TextStyle(
+                      //       color: Colors.white,
+                      //       fontSize: 22.0,
+                      //       fontWeight: FontWeight.bold),
+                      // ),
                       Text(
-                        currentWeatherStatus,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        currentDate,
+                        currentDate.toString(),
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

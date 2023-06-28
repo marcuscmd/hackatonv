@@ -57,13 +57,13 @@ class _PropCadastroState extends State<PropCadastroState> {
       cancelText: "CANCELAR",
       builder: (context, child) => Theme(
         data: ThemeData.light().copyWith(
-          primaryColor: Colors.redAccent,
+          primaryColor: const Color.fromARGB(255, 130, 247, 247),
           buttonTheme:
               const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           colorScheme: const ColorScheme.light(
-            primary: Colors.redAccent,
+            primary: Color.fromARGB(255, 100, 191, 233),
           ).copyWith(
-            secondary: Colors.redAccent,
+            secondary:  const Color.fromARGB(255, 100, 191, 233),
           ),
         ),
         child: child!,
@@ -344,7 +344,7 @@ class _PropCadastroState extends State<PropCadastroState> {
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(310, 100),
                         backgroundColor:
-                            const Color.fromARGB(82, 114, 219, 233),
+                            const Color.fromARGB(255, 100, 191, 233),
                       ),
                       onPressed: () {
                         _controller.cadastro();

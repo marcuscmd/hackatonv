@@ -46,7 +46,7 @@ class PropCadastroController extends GetxController {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 4,
-        backgroundColor: const Color.fromARGB(255, 192, 123, 123),
+        backgroundColor: const Color.fromARGB(255, 32, 82, 77),
         textColor: Colors.white,
         fontSize: 15.0);
   }

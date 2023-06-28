@@ -19,22 +19,50 @@ class LoginPage extends GetView<LoginController> {
                 image: DecorationImage(
                     image: AssetImage('assets/backgroud.png'),
                     fit: BoxFit.fill)),
-            child: Stack(children: [
-              Positioned(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 60),
-                  child: const Center(
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Color.fromARGB(230, 245, 245, 245),
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold),
+            child: Stack(
+              children: [
+                Positioned(
+                  child: Container(
+                    height: 180,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/logo.png'),
+                      ),
                     ),
                   ),
                 ),
-              )
-            ]),
+                Positioned(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 60),
+                    child: const Center(
+                      child: Text(
+                        'AgroTempo',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 254, 254),
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 120,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 60),
+                    child: const Center(
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                            color: Color.fromARGB(230, 0, 0, 0),
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Padding(
               padding: const EdgeInsets.all(30),
@@ -86,14 +114,29 @@ class LoginPage extends GetView<LoginController> {
                               ),
                             ),
                           ),
-                          child: TextFormField(
-                            controller: controller.passwordController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Senha',
-                              hintStyle: TextStyle(
-                                color: Colors.grey[400],
-                                fontStyle: FontStyle.italic,
+                          child: Obx(
+                            () => TextFormField(
+                              controller: controller.passwordController,
+                              obscureText: controller.showPassword.value,
+                              cursorColor: Colors.grey[400],
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Senha',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontStyle: FontStyle.italic,
+                                ),
+                                suffixIcon: GestureDetector(
+                                  child: Icon(
+                                    controller.showPassword.value == false
+                                        ? Icons.visibility_rounded
+                                        : Icons.visibility_off,
+                                    color: Colors.black54,
+                                  ),
+                                  onTap: () {
+                                    controller.toggleShowPassword();
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -126,7 +169,7 @@ class LoginPage extends GetView<LoginController> {
                                 title: 'Erro ao Logar!',
                                 message: result.toString(),
                                 contentType: ContentType.failure,
-                                color: const Color.fromARGB(255, 192, 0, 0),
+                                color: const Color.fromARGB(255, 32, 82, 77),
                               ),
                             );
                             // ignore: use_build_context_synchronously

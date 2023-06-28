@@ -2,10 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hack2v/modules/prop_info/prop_info_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'dart:ui' as ui;
 
 import '../../providers/database_prop.dart';
+
+var newFormat = DateFormat("dd/MM/yyyy");
+var dt = DateTime.now();
+String updatedDt = newFormat.format(dt);
+String data = DateTime.now().toIso8601String();
 
 class PropInfoPage extends GetView<PropInfoController> {
   const PropInfoPage({super.key});
@@ -34,6 +40,38 @@ class PropInfoState extends StatefulWidget {
 }
 
 class _PropInfo extends State<PropInfoState> {
+
+    Future<void> _data(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: dt,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      cancelText: "CANCELAR",
+      builder: (context, child) => Theme(
+        data: ThemeData.light().copyWith(
+          primaryColor: const Color.fromARGB(255, 130, 247, 247),
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          colorScheme: const ColorScheme.light(
+            primary: Color.fromARGB(255, 100, 191, 233),
+          ).copyWith(
+            secondary:  const Color.fromARGB(255, 100, 191, 233),
+          ),
+        ),
+        child: child!,
+      ),
+    );
+    if (picked != null) {
+      setState(() {
+        dt = picked;
+        data = dt.toIso8601String();
+        updatedDt = newFormat.format(picked);
+        _controller.dataController.text = updatedDt;
+      });
+    }
+  }
+
   final PropInfoController _controller = PropInfoController();
   int selectvalue = 0;
   Propriedade? propriedade;
@@ -249,10 +287,18 @@ class _PropInfo extends State<PropInfoState> {
                             controller: _dataController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: propriedade?.data ?? 'Data Plantio',
+                              hintText: propriedade?.data.toString() ?? 'Data Plantio',
                               hintStyle: TextStyle(
                                 color: Colors.grey[400],
                               ),
+                              suffixIcon: GestureDetector(
+                                child: const Icon(Icons.arrow_drop_down),
+                                onTap: () {
+                                  setState(() {
+                                    _data(context);
+                                  });
+                                },
+                              )
                             ),
                           ),
                         ),
@@ -325,17 +371,13 @@ class _PropInfo extends State<PropInfoState> {
                 child: Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(310, 100),
-                      backgroundColor: const Color.fromARGB(82, 114, 219, 233),
-                    ),
+                        minimumSize: const Size(310, 100),
+                        backgroundColor: const Color.fromARGB(255, 100, 191, 233),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        )),
                     onPressed: () {
-                      setState(() {
-                        if (saveChanges()) {
-                          Get.toNamed('/menu');
-                        } else {
-                          //mensagem erro
-                        }
-                      });
+                      saveChanges();
                     },
                     child: const Text('Salvar',
                         style: TextStyle(
