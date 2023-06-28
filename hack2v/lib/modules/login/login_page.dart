@@ -55,7 +55,7 @@ class LoginPage extends GetView<LoginController> {
                         'Login',
                         style: TextStyle(
                             color: Color.fromARGB(230, 0, 0, 0),
-                            fontSize: 50,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),
                     ),

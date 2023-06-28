@@ -295,6 +295,7 @@ class _AduboState extends State<AduboState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Algodão') {
@@ -306,6 +307,7 @@ class _AduboState extends State<AduboState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Soja') {
@@ -322,6 +324,7 @@ class _AduboState extends State<AduboState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Arroz') {
@@ -335,6 +338,7 @@ class _AduboState extends State<AduboState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     }

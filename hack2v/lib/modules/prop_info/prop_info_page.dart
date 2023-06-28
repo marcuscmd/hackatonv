@@ -392,6 +392,8 @@ class _PropInfo extends State<PropInfoState> {
                         )),
                     onPressed: () {
                       saveChanges();
+                      _controller.toast('Editado com Sucesso!');
+                      Get.toNamed('/menu');
                     },
                     child: const Text('Salvar',
                         style: TextStyle(

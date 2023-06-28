@@ -297,13 +297,14 @@ class _PlantioState extends State<PlantioState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Algodão') {
       return const Text(
         'O algodão é tipicamente semeado na primavera ou no início do verão, dependendo da região. '
         'Siga as recomendações da variedade escolhida para o espaçamento e a profundidade de plantio corretos. '
-        'O algodão pode ser semeado em linhas ou fileiras.O algodão é uma cultura que prefere climas quentes e ensolarados. '
+        'O algodão pode ser semeado em linhas ou fileiras. O algodão é uma cultura que prefere climas quentes e ensolarados. '
         'Geralmente, a temperatura ideal para o crescimento do algodão está na faixa de 24°C a 30°C durante o dia. '
         'Certifique-se de escolher uma região com um clima adequado para o cultivo do algodão. '
         'O algodão cresce melhor em solos férteis, bem drenados e profundos. O pH ideal do solo para o cultivo de algodão está na faixa de 6 a 7. '
@@ -313,6 +314,7 @@ class _PlantioState extends State<PlantioState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Soja') {
@@ -326,6 +328,7 @@ class _PlantioState extends State<PlantioState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     } else if (propriedade?.tipo == 'Arroz') {
@@ -341,6 +344,7 @@ class _PlantioState extends State<PlantioState> {
         style: TextStyle(
           color: Colors.black,
           fontSize: 17,
+          fontWeight: FontWeight.bold,
         ),
       );
     }
