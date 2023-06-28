@@ -40,8 +40,12 @@ class PropInfoState extends StatefulWidget {
 }
 
 class _PropInfo extends State<PropInfoState> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
-    Future<void> _data(BuildContext context) async {
+  Future<void> _data(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: dt,
@@ -56,7 +60,7 @@ class _PropInfo extends State<PropInfoState> {
           colorScheme: const ColorScheme.light(
             primary: Color.fromARGB(255, 100, 191, 233),
           ).copyWith(
-            secondary:  const Color.fromARGB(255, 100, 191, 233),
+            secondary: const Color.fromARGB(255, 100, 191, 233),
           ),
         ),
         child: child!,
@@ -67,7 +71,7 @@ class _PropInfo extends State<PropInfoState> {
         dt = picked;
         data = dt.toIso8601String();
         updatedDt = newFormat.format(picked);
-        _controller.dataController.text = updatedDt;
+        _dataController.text = updatedDt;
       });
     }
   }
@@ -286,20 +290,21 @@ class _PropInfo extends State<PropInfoState> {
                           child: TextFormField(
                             controller: _dataController,
                             decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: propriedade?.data.toString() ?? 'Data Plantio',
-                              hintStyle: TextStyle(
-                                color: Colors.grey[400],
-                              ),
-                              suffixIcon: GestureDetector(
-                                child: const Icon(Icons.arrow_drop_down),
-                                onTap: () {
-                                  setState(() {
-                                    _data(context);
-                                  });
-                                },
-                              )
-                            ),
+                                border: InputBorder.none,
+                                hintText: updatedDt == DateTime.now()
+                                    ? updatedDt
+                                    : 'Data Plantio',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[400],
+                                ),
+                                suffixIcon: GestureDetector(
+                                  child: const Icon(Icons.arrow_drop_down),
+                                  onTap: () {
+                                    setState(() {
+                                      _data(context);
+                                    });
+                                  },
+                                )),
                           ),
                         ),
                       ),
@@ -331,29 +336,37 @@ class _PropInfo extends State<PropInfoState> {
                         ),
                       ),
                     ),
-                    child: TextButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            propriedade?.tipo ?? 'Tipo de Plantio',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 17,
-                            ),
+                    child: AbsorbPointer(
+                      absorbing: !_controller.isEditingData.value,
+                      child: IgnorePointer(
+                        ignoring: !_controller.isEditingData.value,
+                        child: TextButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _tipoController.text != ""
+                                    ? _tipoController.text
+                                    : 'Tipo de Plantio',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              const Icon(
+                                Ionicons.chevron_down_outline,
+                                color: Colors.grey,
+                              ),
+                            ],
                           ),
-                          //const Icon(
-                          //  Ionicons.chevron_down_outline,
-                          //  color: Colors.grey,
-                          // ),
-                        ],
-                      ),
-                      onPressed: () {
-                        //openDialog2();
-                      },
-                      style: const ButtonStyle(
-                        alignment:
-                            Alignment.centerLeft, // Alinhamento à esquerda
+                          onPressed: () {
+                            openDialog2();
+                          },
+                          style: const ButtonStyle(
+                            alignment:
+                                Alignment.centerLeft, // Alinhamento à esquerda
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -372,7 +385,8 @@ class _PropInfo extends State<PropInfoState> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         minimumSize: const Size(310, 100),
-                        backgroundColor: const Color.fromARGB(255, 100, 191, 233),
+                        backgroundColor:
+                            const Color.fromARGB(255, 100, 191, 233),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         )),
@@ -469,6 +483,10 @@ class _PropInfo extends State<PropInfoState> {
   void submit(Propriedade propriedadeSelecionada) {
     setState(() {
       propriedade = propriedadeSelecionada;
+      updatedDt = propriedadeSelecionada.data;
+      _dataController.text = propriedadeSelecionada.data;
+      _hectarController.text = propriedadeSelecionada.hectar.toString();
+      _tipoController.text = propriedadeSelecionada.tipo;
     });
     Get.back();
   }
@@ -481,7 +499,7 @@ class _PropInfo extends State<PropInfoState> {
             nomePropriedade: propriedade!.nomePropriedade,
             hectar: double.parse(valorHectar()),
             data: valorData(),
-            tipo: propriedade!.tipo,
+            tipo: _tipoController.text,
             idUsuario: propriedade!.idUsuario);
 
         // Chamar o método de salvamento no controlador ou serviço correspondente
@@ -525,7 +543,7 @@ class _PropInfo extends State<PropInfoState> {
                       autofocus: true,
                       title: const Text('Arroz'),
                       value: 'Arroz',
-                      groupValue: selectvalue,
+                      groupValue: selectvalue2,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
@@ -537,7 +555,7 @@ class _PropInfo extends State<PropInfoState> {
                       autofocus: true,
                       title: const Text('Trigo'),
                       value: 'Trigo',
-                      groupValue: selectvalue,
+                      groupValue: selectvalue2,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
@@ -549,7 +567,7 @@ class _PropInfo extends State<PropInfoState> {
                       autofocus: true,
                       title: const Text('Algodão'),
                       value: 'Algodão',
-                      groupValue: selectvalue,
+                      groupValue: selectvalue2,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
@@ -561,7 +579,7 @@ class _PropInfo extends State<PropInfoState> {
                       autofocus: true,
                       title: const Text('Soja'),
                       value: 'Soja',
-                      groupValue: selectvalue,
+                      groupValue: selectvalue2,
                       activeColor: Colors.black,
                       onChanged: (value) {
                         setState(() {
@@ -574,15 +592,16 @@ class _PropInfo extends State<PropInfoState> {
               ),
               actions: [
                 TextButton(
-                  child: const Text(
-                    'Ok',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  onPressed: submit2,
-                ),
+                    onPressed: () {
+                      submit2(selectvalue2);
+                    }),
               ],
             );
           },
@@ -591,7 +610,10 @@ class _PropInfo extends State<PropInfoState> {
     );
   }
 
-  void submit2() {
+  void submit2(String value) {
+    setState(() {
+      _tipoController.text = value;
+    });
     Get.back();
   }
 }
